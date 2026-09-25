@@ -717,7 +717,7 @@ export class FFmpegService {
         if (c.normalize) audioEnhance += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 
         filterParts.push(
-          `[${idx}:a]atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},aformat=sample_rates=44100:channel_layouts=stereo,volume=${vol.toFixed(2)},apad=whole_dur=${c.effectiveDuration.toFixed(3)},atrim=0:${c.effectiveDuration.toFixed(3)}[a${idx}]`
+          `[${idx}:a]atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,volume=${vol.toFixed(2)},apad=whole_dur=${c.effectiveDuration.toFixed(3)},atrim=0:${c.effectiveDuration.toFixed(3)}[a${idx}]`
         );
       } else {
         filterParts.push(
@@ -846,7 +846,8 @@ export class FFmpegService {
         if (ti.style?.posY !== undefined) yExpr = `h*${(ti.style.posY / 100).toFixed(2)}`;
 
         const outVTag = `[vtxt${tIdx}]`;
-        const fontOpt = fs.existsSync(path.resolve('arial.ttf')) ? 'fontfile=arial.ttf:' : '';
+        const fontFile = fs.existsSync('arial.ttf') ? 'arial.ttf' : (fs.existsSync('server/arial.ttf') ? 'server/arial.ttf' : '');
+        const fontOpt = fontFile ? `fontfile='${fontFile}':` : '';
         filterParts.push(
           `${currentVideoTag}drawtext=${fontOpt}text='${cleanText}':fontsize=${fontSize}:fontcolor=${fontColor}:x=(w-text_w)/2:y=${yExpr}:enable='between(t,${ti.start.toFixed(2)},${ti.end.toFixed(2)})':box=1:boxcolor=black@0.65:boxborderw=6${outVTag}`
         );
@@ -874,11 +875,11 @@ export class FFmpegService {
 
         if (track.isMuted || vol <= 0.001) {
           filterParts.push(
-            `aevalsrc=0:d=${trackDur.toFixed(3)}:s=44100:c=stereo${trackTag}`
+            `aevalsrc=0:d=${trackDur.toFixed(3)}:s=44100:c=stereo:f=fltp${trackTag}`
           );
         } else {
           const inputIdx = nextInputIdx++;
-          inputs.push('-stream_loop', '-1', '-vn', '-i', track.filePath);
+          inputs.push('-vn', '-i', track.filePath);
           let extraFilters = '';
           if (track.normalize) extraFilters += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 
@@ -889,7 +890,7 @@ export class FFmpegService {
           }
 
           filterParts.push(
-            `[${inputIdx}:a]atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=stereo,volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters}${trackTag}`
+            `[${inputIdx}:a]aloop=loop=-1:size=2e+09,atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters}${trackTag}`
           );
         }
         bgmTags.push(trackTag);
