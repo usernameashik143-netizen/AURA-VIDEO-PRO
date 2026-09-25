@@ -717,7 +717,7 @@ export class FFmpegService {
         if (c.normalize) audioEnhance += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 
         filterParts.push(
-          `[${idx}:a]atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},aformat=sample_rates=44100:channel_layouts=stereo,volume=${vol.toFixed(2)}[a${idx}]`
+          `[${idx}:a]atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},aformat=sample_rates=44100:channel_layouts=stereo,volume=${vol.toFixed(2)},apad=whole_dur=${c.effectiveDuration.toFixed(3)},atrim=0:${c.effectiveDuration.toFixed(3)}[a${idx}]`
         );
       } else {
         filterParts.push(
