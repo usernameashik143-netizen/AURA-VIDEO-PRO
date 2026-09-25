@@ -902,6 +902,8 @@ export class FFmpegService {
 
     const args = [
       '-y',
+      '-threads',
+      '2',
       ...inputs,
       '-filter_complex',
       filterString,
@@ -911,7 +913,7 @@ export class FFmpegService {
       finalAudioTag,
       '-c:v',
       videoCodec,
-      ...(isWebM ? ['-crf', crf, '-b:v', '0'] : ['-preset', preset, '-crf', crf, '-pix_fmt', 'yuv420p']),
+      ...(isWebM ? ['-crf', crf, '-b:v', '0', '-threads', '2'] : ['-preset', preset, '-crf', crf, '-pix_fmt', 'yuv420p', '-threads', '2']),
       '-c:a',
       audioCodec,
       '-b:a',
@@ -920,6 +922,8 @@ export class FFmpegService {
       '44100',
       '-ac',
       '2',
+      '-max_muxing_queue_size',
+      '1024',
       '-t',
       runningDuration.toFixed(3),
       outputPath,
@@ -947,7 +951,7 @@ export class FFmpegService {
         }
       });
 
-      proc.on('close', async (code) => {
+      proc.on('close', async (code, signal) => {
         if (code === 0) {
           try {
             const probe = await this.probeMedia(outputPath);
@@ -958,8 +962,8 @@ export class FFmpegService {
             resolve(outputPath);
           }
         } else {
-          console.error('FFmpeg render error code:', code, errorLog);
-          reject(new Error(`FFmpeg rendering failed with code ${code}: ${errorLog.slice(-500)}`));
+          console.error(`FFmpeg render error code: ${code}, signal: ${signal}`, errorLog);
+          reject(new Error(`FFmpeg rendering failed with code ${code || signal}: ${errorLog.slice(-500)}`));
         }
       });
 
