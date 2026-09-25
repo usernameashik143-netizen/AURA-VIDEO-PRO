@@ -2,7 +2,7 @@ import { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { EXPORTS_DIR, MEDIA_FILE, SEEDS_DIR, UPLOADS_DIR } from '../config.js';
+import { EXPORTS_DIR, MEDIA_FILE, SEEDS_DIR, UPLOADS_DIR, PROJECTS_FILE } from '../config.js';
 import { FFmpegService, RenderClipItem, RenderAudioItem } from '../services/ffmpegService.js';
 import { MediaItem } from '../services/seedService.js';
 import { AudioService } from '../services/audioService.js';
@@ -61,6 +61,17 @@ router.post(['/', '/start'], async (req, res) => {
       autoDucking = false,
       duckingAmount = 0.5,
     } = req.body;
+
+    // If clips is empty but projectId is provided, lookup stored project
+    if (clips.length === 0 && !req.body.project && projectId && fs.existsSync(PROJECTS_FILE)) {
+      try {
+        const stored = JSON.parse(fs.readFileSync(PROJECTS_FILE, 'utf-8'));
+        const found = stored.find((p: any) => p.id === projectId);
+        if (found) {
+          req.body.project = found;
+        }
+      } catch {}
+    }
 
     // Support direct project & config object
     if (req.body.project) {
