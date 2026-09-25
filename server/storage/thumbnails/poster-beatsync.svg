@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-beatsync" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-beatsync" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-beat" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#070714"/>
+        <stop offset="40%" stop-color="#13092c"/>
+        <stop offset="80%" stop-color="#1e1b4b"/>
+        <stop offset="100%" stop-color="#020617"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-beat)"/>
+    <!-- Concentric bass shockwaves -->
+    <circle cx="300" cy="420" r="70" fill="none" stroke="#818cf8" stroke-width="2" opacity="0.8"/>
+    <circle cx="300" cy="420" r="130" fill="none" stroke="#c084fc" stroke-width="1.8" opacity="0.6"/>
+    <circle cx="300" cy="420" r="200" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="300" cy="420" r="280" fill="none" stroke="#ec4899" stroke-width="1" opacity="0.25"/>
+    <!-- Vertical Equalizer Visualizer Bars -->
+    <g fill="#22d3ee" opacity="0.85">
+      <rect x="140" y="380" width="12" height="80" rx="4"/>
+      <rect x="165" y="320" width="12" height="140" rx="4"/>
+      <rect x="190" y="270" width="12" height="190" rx="4"/>
+      <rect x="215" y="350" width="12" height="110" rx="4"/>
+      <rect x="240" y="220" width="12" height="240" rx="4" fill="#818cf8"/>
+      <rect x="265" y="180" width="12" height="280" rx="4" fill="#a855f7"/>
+      <rect x="290" y="140" width="12" height="320" rx="4" fill="#c084fc"/>
+      <rect x="315" y="160" width="12" height="300" rx="4" fill="#a855f7"/>
+      <rect x="340" y="230" width="12" height="230" rx="4" fill="#818cf8"/>
+      <rect x="365" y="300" width="12" height="160" rx="4"/>
+      <rect x="390" y="260" width="12" height="200" rx="4"/>
+      <rect x="415" y="340" width="12" height="120" rx="4"/>
+      <rect x="440" y="390" width="12" height="70" rx="4"/>
+    </g>
+    <!-- Center pulse core -->
+    <circle cx="300" cy="420" r="25" fill="#ffffff" filter="drop-shadow(0 0 25px #22d3ee)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-beatsync)" />
+</svg>

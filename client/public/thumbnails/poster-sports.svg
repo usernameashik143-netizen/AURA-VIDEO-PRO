@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-sports" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-sports" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-sports" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0f0702"/>
+        <stop offset="35%" stop-color="#431407"/>
+        <stop offset="70%" stop-color="#7c2d12"/>
+        <stop offset="100%" stop-color="#172554"/>
+      </linearGradient>
+      <linearGradient id="streak-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffedd5"/>
+        <stop offset="40%" stop-color="#fb923c"/>
+        <stop offset="100%" stop-color="#ea580c"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-sports)"/>
+    <!-- Stadium Floodlight Beams -->
+    <polygon points="50,0 120,0 260,800 120,800" fill="#ffedd5" opacity="0.12" filter="blur(20px)"/>
+    <polygon points="550,0 480,0 340,800 480,800" fill="#38bdf8" opacity="0.1" filter="blur(20px)"/>
+    <!-- Dynamic diagonal speed streaks -->
+    <line x1="80" y1="180" x2="380" y2="480" stroke="url(#streak-orange)" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+    <line x1="140" y1="140" x2="480" y2="480" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+    <line x1="40" y1="260" x2="280" y2="500" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+    <!-- Powerful sprinter / jumper silhouette -->
+    <circle cx="340" cy="300" r="14" fill="#0b0603"/>
+    <path d="M330 315 L360 350 L380 340 L430 320 L425 335 L385 365 L360 410 L395 480 L440 500 L435 515 L380 495 L345 425 L320 460 L290 530 L275 520 L305 445 L325 390 L315 360 L275 375 L260 365 L310 335 Z" fill="#0b0603"/>
+    <!-- High-impact orange ground glow -->
+    <ellipse cx="340" cy="520" rx="180" ry="35" fill="#f97316" opacity="0.4" filter="blur(20px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-sports)" />
+</svg>

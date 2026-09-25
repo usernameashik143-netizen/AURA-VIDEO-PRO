@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-slowmo" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-slowmo" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-slow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0a0518"/>
+        <stop offset="35%" stop-color="#2e1065"/>
+        <stop offset="70%" stop-color="#164e63"/>
+        <stop offset="100%" stop-color="#083344"/>
+      </linearGradient>
+      <linearGradient id="ribbon-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#c084fc"/>
+        <stop offset="50%" stop-color="#38bdf8"/>
+        <stop offset="100%" stop-color="#2dd4bf"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-slow)"/>
+    <!-- Suspended fluid droplet ripples frozen in time -->
+    <ellipse cx="300" cy="400" rx="220" ry="80" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
+    <ellipse cx="300" cy="400" rx="160" ry="58" fill="none" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
+    <ellipse cx="300" cy="400" rx="90" ry="32" fill="none" stroke="#22d3ee" stroke-width="3" opacity="0.8"/>
+    <!-- Flowing silk ribbon suspended in mid-air -->
+    <path d="M60 250 C180 180, 220 550, 340 380 C420 280, 480 600, 560 480" fill="none" stroke="url(#ribbon-glow)" stroke-width="24" stroke-linecap="round" opacity="0.85" filter="drop-shadow(0 0 18px rgba(56,189,248,0.5))"/>
+    <path d="M60 250 C180 180, 220 550, 340 380 C420 280, 480 600, 560 480" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+    <!-- Floating splash beads -->
+    <circle cx="280" cy="310" r="7" fill="#ffffff" opacity="0.9" filter="drop-shadow(0 0 6px #38bdf8)"/>
+    <circle cx="340" cy="270" r="5" fill="#c084fc" opacity="0.85"/>
+    <circle cx="380" cy="350" r="8" fill="#38bdf8" opacity="0.85"/>
+    <circle cx="210" cy="440" r="6" fill="#2dd4bf" opacity="0.75"/>
+    <!-- Central suspended impact droplet spike -->
+    <path d="M295 400 Q300 320 300 280 Q300 320 305 400 Z" fill="#ffffff" filter="drop-shadow(0 0 10px #38bdf8)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-slowmo)" />
+</svg>

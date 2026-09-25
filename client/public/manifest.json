@@ -1,0 +1,23 @@
+{
+  "name": "Aura Video Pro — Professional AI Video Editor",
+  "short_name": "Aura Video Pro",
+  "description": "Professional multi-track timeline video editor with real AI background removal, liquid glass UI, and cinematic filters.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070709",
+  "theme_color": "#070709",
+  "orientation": "any",
+  "categories": ["productivity", "video", "multimedia"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

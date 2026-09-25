@@ -1,0 +1,1529 @@
+[
+  {
+    "id": "proj-9c868af8",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-25T08:55:50.032Z",
+    "updatedAt": "2026-09-25T08:55:50.032Z",
+    "tracks": [
+      {
+        "id": "track-video-1790326550032",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790326550032",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790326550032",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-908a9838",
+    "title": "Untitled Project",
+    "aspectRatio": "1:1",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-24T16:51:14.010Z",
+    "updatedAt": "2026-09-24T16:51:14.010Z",
+    "tracks": [
+      {
+        "id": "track-video-1790268674013",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790268674013",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790268674013",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-d79cef07",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-24T16:51:12.637Z",
+    "updatedAt": "2026-09-24T16:51:12.637Z",
+    "tracks": [
+      {
+        "id": "track-video-1790268672637",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790268672637",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790268672637",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-d2cee378",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-24T11:21:37.183Z",
+    "updatedAt": "2026-09-24T11:21:37.183Z",
+    "tracks": [
+      {
+        "id": "track-video-1790248897183",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790248897183",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790248897183",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-27727697",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-22T09:44:02.736Z",
+    "updatedAt": "2026-09-22T09:44:02.736Z",
+    "tracks": [
+      {
+        "id": "track-video-1790070242736",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790070242736",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790070242736",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-9a79b377",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-22T09:17:53.019Z",
+    "updatedAt": "2026-09-22T09:17:53.019Z",
+    "tracks": [
+      {
+        "id": "track-video-1790068673019",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1790068673019",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1790068673019",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-6d2ed9a7",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-20T10:48:52.483Z",
+    "updatedAt": "2026-09-20T10:48:52.483Z",
+    "tracks": [
+      {
+        "id": "track-video-1789901332483",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1789901332483",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1789901332483",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-5764b3be",
+    "title": "Verified Editable Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-20T09:14:15.555Z",
+    "updatedAt": "2026-09-20T09:14:15.555Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-tmpl-1-9f3b",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-2-da3e",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-3-645e",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-4-3b7a",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-tmpl-1-678c",
+            "text": "DAY ONE ✈️",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-tmpl-3-2f03",
+            "text": "PARADISE FOUND",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-tmpl-6f89",
+            "mediaId": "seed-bgm-4",
+            "name": "Chill Travel Breeze",
+            "url": "/seeds/chill_travel_breeze.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\chill_travel_breeze.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.6,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-3b9bc812",
+    "title": "Verified Editable Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-20T09:13:41.012Z",
+    "updatedAt": "2026-09-20T09:13:41.012Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-tmpl-1-4fce",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-2-8514",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-3-f7ef",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-4-e555",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "golden_hour",
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-tmpl-1-5f0b",
+            "text": "DAY ONE ✈️",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-tmpl-3-1a87",
+            "text": "PARADISE FOUND",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-tmpl-4037",
+            "mediaId": "seed-bgm-4",
+            "name": "Chill Travel Breeze",
+            "url": "/seeds/chill_travel_breeze.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\chill_travel_breeze.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.6,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-f40078f0",
+    "title": "Verified Customized Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-19T16:22:21.048Z",
+    "updatedAt": "2026-09-19T16:22:21.048Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-custom-1-03b4",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-2-03af",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-3-8a11",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-4-7ca7",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-custom-1-116d",
+            "text": "SLOT 1 MASTER",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-2-78ab",
+            "text": "SLOT 2 MASTER",
+            "start": 4.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-3-7be4",
+            "text": "SLOT 3 MASTER",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-4-4223",
+            "text": "SLOT 4 MASTER",
+            "start": 13.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-custom-8113",
+            "mediaId": "seed-bgm-2",
+            "name": "Lo-Fi Night Drive",
+            "url": "/seeds/lofi_night_drive.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\lofi_night_drive.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.65,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-11fba56f",
+    "title": "Verified Customized Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-19T16:20:07.841Z",
+    "updatedAt": "2026-09-19T16:20:07.841Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-custom-1-f55c",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-2-3821",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-3-2e23",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-4-0273",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-custom-1-6f2d",
+            "text": "SLOT 1 MASTER",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-2-564e",
+            "text": "SLOT 2 MASTER",
+            "start": 4.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-3-2990",
+            "text": "SLOT 3 MASTER",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-4-f679",
+            "text": "SLOT 4 MASTER",
+            "start": 13.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-custom-e9c6",
+            "mediaId": "seed-bgm-2",
+            "name": "Lo-Fi Night Drive",
+            "url": "/seeds/lofi_night_drive.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\lofi_night_drive.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.65,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-18bc5365",
+    "title": "Verified Customized Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-19T10:50:38.775Z",
+    "updatedAt": "2026-09-19T10:50:38.775Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-custom-1-78f2",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-2-dfa3",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-3-d992",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-4-329e",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-custom-1-a387",
+            "text": "SLOT 1 MASTER",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-2-08b2",
+            "text": "SLOT 2 MASTER",
+            "start": 4.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-3-553b",
+            "text": "SLOT 3 MASTER",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-4-69fa",
+            "text": "SLOT 4 MASTER",
+            "start": 13.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-custom-844a",
+            "mediaId": "seed-bgm-2",
+            "name": "Lo-Fi Night Drive",
+            "url": "/seeds/lofi_night_drive.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\lofi_night_drive.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.65,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-e0f378eb",
+    "title": "Verified Customized Masterpiece",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 18,
+    "thumbnailUrl": "/thumbnails/seed-clip-2.jpg",
+    "createdAt": "2026-09-19T10:48:53.971Z",
+    "updatedAt": "2026-09-19T10:48:53.971Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-custom-1-2433",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-2-b63b",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 4.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "wipeleft",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-3-02fb",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 9,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-custom-4-d367",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\uploads\\af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 13.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "effects": [
+              {
+                "type": "glitch",
+                "intensity": 60,
+                "enabled": true
+              }
+            ],
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-custom-1-9dfb",
+            "text": "SLOT 1 MASTER",
+            "start": 0.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-2-d6a0",
+            "text": "SLOT 2 MASTER",
+            "start": 4.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-3-5fb2",
+            "text": "SLOT 3 MASTER",
+            "start": 9.3,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-custom-4-2342",
+            "text": "SLOT 4 MASTER",
+            "start": 13.8,
+            "duration": 3.38,
+            "style": {
+              "fontSize": 42,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-custom-201d",
+            "mediaId": "seed-bgm-2",
+            "name": "Lo-Fi Night Drive",
+            "url": "/seeds/lofi_night_drive.mp3",
+            "filePath": "C:\\Users\\Aashik\\Desktop\\AI Video Editor\\server\\storage\\seeds\\lofi_night_drive.mp3",
+            "start": 0,
+            "duration": 18,
+            "trimStart": 0,
+            "volume": 0.65,
+            "fadeIn": 0.4,
+            "fadeOut": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-f10309cd",
+    "title": "Trending Viral Reel Project",
+    "aspectRatio": "9:16",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 15,
+    "thumbnailUrl": "/thumbnails/seed-clip-4.jpg",
+    "createdAt": "2026-09-18T04:08:32.059Z",
+    "updatedAt": "2026-09-18T04:08:32.059Z",
+    "tracks": [
+      {
+        "id": "track-video-primary",
+        "type": "video",
+        "name": "Main Video",
+        "clips": [
+          {
+            "id": "clip-tmpl-1",
+            "mediaId": "8585dca4-b613-433e-a5de-f980e2a504d5",
+            "name": "uploaded_final_test",
+            "url": "/uploads/8585dca4-b613-433e-a5de-f980e2a504d5.mp4",
+            "start": 0,
+            "duration": 2.5,
+            "trimStart": 0,
+            "trimEnd": 2.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "transition": {
+              "type": "glitch",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-2",
+            "mediaId": "e423fb09-8f97-43a6-8522-90c9fcec4466",
+            "name": "uploaded_final_test",
+            "url": "/uploads/e423fb09-8f97-43a6-8522-90c9fcec4466.mp4",
+            "start": 2.5,
+            "duration": 3.5,
+            "trimStart": 0,
+            "trimEnd": 3.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "transition": {
+              "type": "zoom",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-3",
+            "mediaId": "b6248d87-efe6-457a-86cc-e7273b341686",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/b6248d87-efe6-457a-86cc-e7273b341686.mp4",
+            "start": 6,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "transition": {
+              "type": "slide",
+              "duration": 0.6
+            }
+          },
+          {
+            "id": "clip-tmpl-4",
+            "mediaId": "af507496-c907-41e9-9f93-035560c1e753",
+            "name": "uploaded_browser_clip",
+            "url": "/uploads/af507496-c907-41e9-9f93-035560c1e753.mp4",
+            "start": 10.5,
+            "duration": 4.5,
+            "trimStart": 0,
+            "trimEnd": 4.5,
+            "speed": 1,
+            "volume": 1,
+            "filter": "vibrant",
+            "transition": {
+              "type": "fade",
+              "duration": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-text-primary",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": [
+          {
+            "id": "text-tmpl-1",
+            "text": "WAIT FOR IT ⚡",
+            "start": 0.3,
+            "duration": 1.75,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          },
+          {
+            "id": "text-tmpl-3",
+            "text": "UNBELIEVABLE 🔥",
+            "start": 6.3,
+            "duration": 3.15,
+            "style": {
+              "fontSize": 40,
+              "fontWeight": "bold",
+              "fontFamily": "Plus Jakarta Sans",
+              "color": "#ffffff",
+              "position": "center",
+              "animation": "pop"
+            }
+          }
+        ]
+      },
+      {
+        "id": "track-audio-primary",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": [
+          {
+            "id": "bgm-tmpl-1",
+            "mediaId": "seed-bgm-3",
+            "name": "Energetic Reel Beat",
+            "url": "/seeds/energetic_reel_beat.mp3",
+            "start": 0,
+            "duration": 15,
+            "trimStart": 0,
+            "volume": 0.4,
+            "fadeIn": 0.5,
+            "fadeOut": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proj-662c26f4",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-18T03:32:48.406Z",
+    "updatedAt": "2026-09-18T03:32:48.406Z",
+    "tracks": [
+      {
+        "id": "track-video-1789702368406",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1789702368406",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1789702368406",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  },
+  {
+    "id": "proj-ecfa3384",
+    "title": "Untitled Project",
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "fps": 30,
+    "duration": 0,
+    "thumbnailUrl": "",
+    "createdAt": "2026-09-17T11:47:25.462Z",
+    "updatedAt": "2026-09-17T11:47:25.462Z",
+    "tracks": [
+      {
+        "id": "track-video-1789645645462",
+        "type": "video",
+        "name": "Main Video",
+        "clips": []
+      },
+      {
+        "id": "track-text-1789645645462",
+        "type": "text",
+        "name": "Titles & Captions",
+        "clips": []
+      },
+      {
+        "id": "track-audio-1789645645462",
+        "type": "audio",
+        "name": "Background Music",
+        "clips": []
+      }
+    ]
+  }
+]

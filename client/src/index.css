@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: #09090b;
+    color: #f4f4f5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    user-select: none;
+    letter-spacing: -0.01em;
+  }
+
+  /* Custom Sleek Scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+  }
+}
+
+/* Category-specific Soft Atmospheric Glows on hover */
+.glow-cinematic:hover {
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-love:hover {
+  box-shadow: 0 0 25px rgba(244, 114, 182, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-travel:hover {
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-nature:hover {
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-dark:hover {
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-slowmo:hover {
+  box-shadow: 0 0 25px rgba(192, 132, 252, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-fashion:hover {
+  box-shadow: 0 0 25px rgba(236, 72, 153, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-sports:hover {
+  box-shadow: 0 0 25px rgba(251, 146, 60, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-birthday:hover {
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-wedding:hover {
+  box-shadow: 0 0 25px rgba(244, 114, 182, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+.glow-beatsync:hover {
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.28), 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Premium Black + Silver Panels */
+.glass-panel {
+  background: rgba(18, 18, 22, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+}
+
+.glass-panel-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  background: rgba(24, 24, 29, 0.95);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.liquid-glass {
+  background: linear-gradient(180deg, rgba(30, 30, 36, 0.9) 0%, rgba(18, 18, 22, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.matte-surface {
+  background-color: #121215;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Metallic Silver Accents */
+.btn-silver-primary {
+  background-color: #f4f4f5;
+  color: #09090b;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.15s ease;
+}
+.btn-silver-primary:hover {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+.btn-silver-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-graphite-secondary {
+  background-color: #1c1c20;
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.15s ease;
+}
+.btn-graphite-secondary:hover {
+  background-color: #26262b;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Shimmer animation */
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-active {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmerWave 2s infinite;
+}
+
+/* Slider Track Styling */
+input[type="range"] {
+  accent-color: #06b6d4;
+}
+
+/* =========================================================
+   CINEMATIC COLOR SYSTEM — TASTEFUL INTENTIONAL ACCENTS
+   ========================================================= */
+
+/* Subtle Electric Cyan: Primary interactive controls & active playhead */
+.accent-cyan {
+  color: #22d3ee;
+}
+.bg-cyan-glow {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 16px rgba(6, 182, 212, 0.18);
+}
+.btn-cyan-accent {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.25) 0%, rgba(14, 116, 144, 0.3) 100%);
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  color: #ecfeff;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.2);
+}
+.btn-cyan-accent:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.38) 0%, rgba(14, 116, 144, 0.45) 100%);
+  border-color: rgba(34, 211, 238, 0.7);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+}
+
+/* Controlled Luminous Violet: AI magic tools & special badges */
+.accent-violet {
+  color: #a78bfa;
+}
+.bg-violet-glow {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(167, 139, 250, 0.35);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.2);
+}
+.btn-violet-accent {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.28) 0%, rgba(109, 40, 217, 0.32) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.5);
+  color: #f5f3ff;
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.22);
+}
+.btn-violet-accent:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.42) 0%, rgba(109, 40, 217, 0.48) 100%);
+  border-color: rgba(167, 139, 250, 0.75);
+  box-shadow: 0 0 22px rgba(139, 92, 246, 0.38);
+}
+
+/* Warm Amber / Gold: Important actions, highlights & warnings */
+.accent-gold {
+  color: #fbbf24;
+}
+.bg-gold-glow {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(251, 191, 36, 0.38);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+}
+
+/* Restrained Teal: Export & Success confirmation */
+.accent-teal {
+  color: #2dd4bf;
+}
+.bg-teal-glow {
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(45, 212, 191, 0.35);
+  box-shadow: 0 0 16px rgba(20, 184, 166, 0.18);
+}
+
+/* Restrained Crimson: Destructive actions & removal */
+.accent-red {
+  color: #f87171;
+}
+.bg-red-glow {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(248, 113, 113, 0.35);
+}

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Production builds
+client/dist/
+server/dist/
+
+# Environment and sensitive keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# Runtime generated media & cache
+server/storage/uploads/*
+!server/storage/uploads/.gitkeep
+server/storage/exports/*
+!server/storage/exports/.gitkeep
+scratch/
+amix_test.mp4
+loop_test.mp3
+test_mix.mp4
+scratch_*.mjs
+
+# Logs and debug files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

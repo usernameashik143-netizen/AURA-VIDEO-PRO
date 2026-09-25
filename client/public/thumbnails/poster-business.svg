@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-business" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-business" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-biz" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#090d16"/>
+        <stop offset="50%" stop-color="#111827"/>
+        <stop offset="100%" stop-color="#030712"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-biz)"/>
+    <!-- Sleek isometric architectural glass grid -->
+    <path d="M100 250 L300 150 L500 250 L300 350 Z" fill="none" stroke="#0284c7" stroke-width="2" opacity="0.4"/>
+    <path d="M100 400 L300 300 L500 400 L300 500 Z" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+    <path d="M100 550 L300 450 L500 550 L300 650 Z" fill="none" stroke="#0284c7" stroke-width="2" opacity="0.4"/>
+    <!-- Glowing core prism -->
+    <polygon points="300,280 340,320 300,360 260,320" fill="#38bdf8" opacity="0.8" filter="drop-shadow(0 0 20px #0ea5e9)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-business)" />
+</svg>

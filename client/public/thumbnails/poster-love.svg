@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-love" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-love" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-love" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#1e0b16"/>
+        <stop offset="35%" stop-color="#4c0527"/>
+        <stop offset="65%" stop-color="#831843"/>
+        <stop offset="85%" stop-color="#be185d"/>
+        <stop offset="100%" stop-color="#450a0a"/>
+      </linearGradient>
+      <radialGradient id="sun-love" cx="50%" cy="58%" r="45%">
+        <stop offset="0%" stop-color="#fef08a" stop-opacity="0.95"/>
+        <stop offset="25%" stop-color="#fb7185" stop-opacity="0.6"/>
+        <stop offset="60%" stop-color="#e11d48" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-love)"/>
+    <rect width="600" height="800" fill="url(#sun-love)"/>
+    <!-- Glowing romantic bokeh circles -->
+    <circle cx="140" cy="220" rx="45" fill="#f43f5e" opacity="0.18" filter="blur(10px)"/>
+    <circle cx="480" cy="180" rx="60" fill="#fb7185" opacity="0.15" filter="blur(15px)"/>
+    <circle cx="220" cy="380" rx="25" fill="#fef08a" opacity="0.3" filter="blur(6px)"/>
+    <circle cx="390" cy="330" rx="35" fill="#fda4af" opacity="0.25" filter="blur(8px)"/>
+    <!-- Setting sun orb -->
+    <circle cx="300" cy="460" r="65" fill="#fff1f2" opacity="0.85" filter="blur(3px)"/>
+    <!-- Horizon water shimmer reflection -->
+    <rect x="0" y="520" width="600" height="280" fill="#2a0614"/>
+    <path d="M260 520 L340 520 L360 620 L240 620 Z" fill="#fda4af" opacity="0.3" filter="blur(12px)"/>
+    <!-- Couple silhouette by the shoreline -->
+    <path d="M0 600 Q300 580 600 600 L600 800 L0 800 Z" fill="#0f0207"/>
+    <!-- Man & Woman close silhouette -->
+    <circle cx="288" cy="520" r="9" fill="#0f0207"/>
+    <circle cx="308" cy="524" r="8" fill="#0f0207"/>
+    <path d="M278 535 C278 528 298 528 298 535 L295 590 L280 590 Z" fill="#0f0207"/>
+    <path d="M300 537 C300 531 318 531 318 537 L315 590 L298 590 Z" fill="#0f0207"/>
+    <!-- Heartfelt warm ambient rim -->
+    <ellipse cx="300" cy="520" rx="50" ry="50" fill="#fb7185" opacity="0.2" filter="blur(14px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-love)" />
+</svg>

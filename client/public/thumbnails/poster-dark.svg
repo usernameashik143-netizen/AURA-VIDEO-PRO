@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-dark" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#050508"/>
+        <stop offset="45%" stop-color="#0c0a17"/>
+        <stop offset="80%" stop-color="#1e0b24"/>
+        <stop offset="100%" stop-color="#060208"/>
+      </linearGradient>
+      <linearGradient id="rim-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#c084fc"/>
+        <stop offset="100%" stop-color="#6b21a8"/>
+      </linearGradient>
+      <linearGradient id="rim-crimson" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#f87171"/>
+        <stop offset="100%" stop-color="#991b1b"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-dark)"/>
+    <!-- Volumetric light shaft -->
+    <polygon points="180,0 260,0 420,800 280,800" fill="#a855f7" opacity="0.08" filter="blur(25px)"/>
+    <!-- Cinematic Portrait Silhouette -->
+    <path d="M220 300 C220 220 380 220 380 300 C380 360 360 400 360 440 L460 520 L480 800 L120 800 L140 520 L240 440 C240 400 220 360 220 300 Z" fill="#09090d"/>
+    <!-- Neon royal purple rim light along left shoulder & head -->
+    <path d="M220 300 C220 220 300 220 300 220" fill="none" stroke="url(#rim-purple)" stroke-width="4" filter="blur(1px)"/>
+    <path d="M220 300 C220 360 240 400 240 440 L140 520 L120 800" fill="none" stroke="url(#rim-purple)" stroke-width="3.5" filter="blur(1.5px)"/>
+    <!-- Neon crimson rim light along right cheek & shoulder -->
+    <path d="M300 220 C380 220 380 300 380 300 C380 360 360 400 360 440 L460 520 L480 800" fill="none" stroke="url(#rim-crimson)" stroke-width="3" filter="blur(1.5px)"/>
+    <!-- Sleek sunglasses specular bar -->
+    <rect x="250" y="295" width="45" height="12" rx="3" fill="#ffffff" opacity="0.9" filter="blur(0.5px)"/>
+    <rect x="305" y="295" width="45" height="12" rx="3" fill="#ffffff" opacity="0.9" filter="blur(0.5px)"/>
+    <!-- Ambient moody bottom smoke -->
+    <ellipse cx="300" cy="760" rx="300" ry="70" fill="#581c87" opacity="0.25" filter="blur(30px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-dark)" />
+</svg>

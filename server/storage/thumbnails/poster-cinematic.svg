@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-cinematic" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-cinematic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-cine" x1="0%" y1="0%" x2="50%" y2="100%">
+        <stop offset="0%" stop-color="#050814"/>
+        <stop offset="40%" stop-color="#0e172e"/>
+        <stop offset="75%" stop-color="#1e153b"/>
+        <stop offset="100%" stop-color="#090514"/>
+      </linearGradient>
+      <radialGradient id="light-cine" cx="50%" cy="45%" r="60%">
+        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.45"/>
+        <stop offset="40%" stop-color="#3b82f6" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="streak-cine" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#22d3ee" stop-opacity="0"/>
+        <stop offset="30%" stop-color="#38bdf8" stop-opacity="0.8"/>
+        <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+        <stop offset="70%" stop-color="#818cf8" stop-opacity="0.8"/>
+        <stop offset="100%" stop-color="#c084fc" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-cine)"/>
+    <rect width="600" height="800" fill="url(#light-cine)"/>
+    <!-- Stars / Atmospheric Specks -->
+    <circle cx="120" cy="140" r="1.5" fill="#fff" opacity="0.6"/>
+    <circle cx="480" cy="90" r="1" fill="#fff" opacity="0.8"/>
+    <circle cx="280" cy="70" r="1.5" fill="#38bdf8" opacity="0.7"/>
+    <circle cx="510" cy="220" r="1" fill="#c084fc" opacity="0.5"/>
+    <circle cx="80" cy="260" r="1.5" fill="#fff" opacity="0.5"/>
+    <!-- Anamorphic Blue Flare Streak -->
+    <rect x="0" y="375" width="600" height="4" fill="url(#streak-cine)" opacity="0.85"/>
+    <ellipse cx="300" cy="377" rx="90" ry="24" fill="#38bdf8" opacity="0.35" filter="blur(6px)"/>
+    <ellipse cx="300" cy="377" rx="30" ry="8" fill="#ffffff" opacity="0.75" filter="blur(2px)"/>
+    <!-- Distant City Skyline Silhouettes -->
+    <path d="M40 540 L40 480 L70 480 L70 450 L95 450 L95 500 L130 500 L130 430 L160 430 L160 420 L165 390 L170 420 L170 540 Z" fill="#0b1120" opacity="0.8"/>
+    <path d="M190 540 L190 440 L230 440 L230 410 L260 410 L260 540 Z" fill="#0b1120" opacity="0.8"/>
+    <path d="M340 540 L340 430 L380 430 L380 400 L395 360 L410 400 L410 460 L440 460 L440 540 Z" fill="#0e172a" opacity="0.9"/>
+    <path d="M460 540 L460 470 L490 470 L490 440 L530 440 L530 540 Z" fill="#0b1120" opacity="0.8"/>
+    <!-- Overlook Cliff with Solitary Person Silhouette -->
+    <path d="M0 640 Q150 560 300 580 Q450 600 600 550 L600 800 L0 800 Z" fill="#030712"/>
+    <!-- Person silhouette admiring horizon -->
+    <path d="M295 545 C295 538 305 538 305 545 C305 550 295 550 295 545 Z" fill="#030712"/>
+    <path d="M292 552 L308 552 L306 580 L294 580 Z" fill="#030712"/>
+    <path d="M294 580 L292 605 L297 605 L300 585 L303 605 L308 605 L306 580 Z" fill="#030712"/>
+    <!-- Atmospheric fog / mist at base -->
+    <ellipse cx="300" cy="580" rx="350" ry="40" fill="#312e81" opacity="0.25" filter="blur(20px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-cinematic)" />
+</svg>

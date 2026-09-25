@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="tvSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#082f49"/>
+      <stop offset="40%" stop-color="#0284c7"/>
+      <stop offset="70%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#tvSky)"/>
+  <!-- Distant cliffs -->
+  <polygon points="0,260 120,180 260,270 0,270" fill="#0c4a6e" opacity="0.8"/>
+  <polygon points="380,270 480,200 600,270 380,270" fill="#0c4a6e" opacity="0.8"/>
+  <!-- Sun & Ocean water -->
+  <circle cx="300" cy="220" r="45" fill="#fef08a" opacity="0.9"/>
+  <rect x="0" y="260" width="600" height="140" fill="#0369a1"/>
+  <ellipse cx="300" cy="300" rx="180" ry="25" fill="#fbbf24" opacity="0.4" filter="blur(10px)"/>
+  <!-- Shoreline & Traveler standing on rock looking at waves -->
+  <path d="M180 400 Q300 340 420 400 Z" fill="#082f49"/>
+  <circle cx="300" cy="315" r="9" fill="#082f49"/>
+  <path d="M292 324 L308 324 L305 365 L295 365 Z" fill="#082f49"/>
+</svg>

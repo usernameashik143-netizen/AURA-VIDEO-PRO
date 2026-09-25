@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="neBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#022c22"/>
+      <stop offset="40%" stop-color="#064e3b"/>
+      <stop offset="80%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#neBg)"/>
+  <!-- Glacial Turquoise Lake -->
+  <ellipse cx="300" cy="240" rx="220" ry="90" fill="#2dd4bf" opacity="0.6" filter="blur(8px)"/>
+  <ellipse cx="300" cy="240" rx="180" ry="70" fill="#0d9488"/>
+  <ellipse cx="300" cy="240" rx="140" ry="50" fill="#115e59"/>
+  <!-- Surrounding Pine Forest Clusters -->
+  <path d="M40 280 L60 210 L80 280 L110 190 L140 280 L180 220 L220 280 Z" fill="#021c17"/>
+  <path d="M380 280 L420 200 L460 280 L500 180 L540 280 L570 210 L600 280 Z" fill="#021c17"/>
+  <path d="M0 310 Q300 290 600 310 L600 400 L0 400 Z" fill="#011410"/>
+</svg>

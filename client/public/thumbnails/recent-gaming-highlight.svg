@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="ghBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050614"/>
+      <stop offset="40%" stop-color="#0e1338"/>
+      <stop offset="80%" stop-color="#1f0933"/>
+      <stop offset="100%" stop-color="#05010a"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#ghBg)"/>
+  <!-- Cyberpunk grid lines -->
+  <line x1="0" y1="320" x2="600" y2="320" stroke="#22d3ee" stroke-width="1.5" opacity="0.4"/>
+  <line x1="0" y1="360" x2="600" y2="360" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <!-- Gamer silhouette -->
+  <circle cx="300" cy="180" r="45" fill="#080b18"/>
+  <path d="M230 250 C230 220 370 220 370 250 L390 380 L210 380 Z" fill="#080b18"/>
+  <!-- Glowing Cyan Headset -->
+  <path d="M255 180 C255 140 345 140 345 180" fill="none" stroke="#22d3ee" stroke-width="6" stroke-linecap="round" filter="drop-shadow(0 0 10px #22d3ee)"/>
+  <rect x="246" y="165" width="16" height="32" rx="6" fill="#22d3ee"/>
+  <rect x="338" y="165" width="16" height="32" rx="6" fill="#22d3ee"/>
+  <!-- Magenta visor glow -->
+  <rect x="275" y="175" width="50" height="14" rx="4" fill="#f43f5e" filter="drop-shadow(0 0 12px #f43f5e)"/>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="wsSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f1008"/>
+      <stop offset="40%" stop-color="#451a03"/>
+      <stop offset="70%" stop-color="#9a3412"/>
+      <stop offset="90%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#wsSky)"/>
+  <!-- Warm romantic sun flare -->
+  <circle cx="420" cy="180" r="70" fill="#fef08a" opacity="0.85" filter="blur(15px)"/>
+  <!-- Distant hill ridges -->
+  <path d="M0 290 Q300 240 600 280 L600 400 L0 400 Z" fill="#291204"/>
+  <!-- Couple in golden meadow -->
+  <circle cx="280" cy="225" r="9" fill="#140602"/>
+  <circle cx="300" cy="230" r="8" fill="#140602"/>
+  <path d="M272 238 L288 238 L286 310 L272 310 Z" fill="#140602"/>
+  <path d="M292 240 L310 240 L325 310 L295 310 Z" fill="#140602"/>
+  <!-- Soft flowing veil -->
+  <path d="M302 230 Q330 260 345 305" stroke="#fef3c7" stroke-width="2" fill="none" opacity="0.75"/>
+</svg>

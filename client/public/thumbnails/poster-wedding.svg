@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-wedding" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-wedding" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-wed" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#1c130d"/>
+        <stop offset="35%" stop-color="#3d2616"/>
+        <stop offset="70%" stop-color="#593b20"/>
+        <stop offset="100%" stop-color="#140c06"/>
+      </linearGradient>
+      <radialGradient id="sun-wed" cx="50%" cy="40%" r="50%">
+        <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.6"/>
+        <stop offset="50%" stop-color="#fde68a" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-wed)"/>
+    <rect width="600" height="800" fill="url(#sun-wed)"/>
+    <!-- Elegant archway floral outline -->
+    <path d="M140 700 L140 380 Q300 240 460 380 L460 700" fill="none" stroke="#d4af37" stroke-width="3" opacity="0.4"/>
+    <!-- Soft golden sparkles -->
+    <circle cx="200" cy="320" r="3" fill="#fff" opacity="0.8" filter="blur(1px)"/>
+    <circle cx="400" cy="300" r="2.5" fill="#fff" opacity="0.85" filter="blur(0.5px)"/>
+    <circle cx="300" cy="260" r="3.5" fill="#fde68a" opacity="0.9"/>
+    <!-- Bride & Groom silhouette inside floral arch -->
+    <path d="M280 430 C280 422 292 422 292 430 L292 470 L280 470 Z" fill="#0c0703"/>
+    <path d="M308 433 C308 426 320 426 320 433 L320 470 L308 470 Z" fill="#0c0703"/>
+    <path d="M270 470 L300 470 L295 620 L275 620 Z" fill="#0c0703"/>
+    <path d="M300 470 L330 470 L360 620 L295 620 Z" fill="#0c0703"/>
+    <!-- Veil flowing breeze -->
+    <path d="M312 430 Q360 480 390 560" fill="none" stroke="#fef9c3" stroke-width="1.5" opacity="0.7"/>
+    <!-- Warm champagne ground reflection -->
+    <ellipse cx="300" cy="620" rx="160" ry="25" fill="#d4af37" opacity="0.3" filter="blur(18px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-wedding)" />
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain-nature" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="vignette-nature" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  
+    <defs>
+      <linearGradient id="bg-nature" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#022c22"/>
+        <stop offset="30%" stop-color="#064e3b"/>
+        <stop offset="60%" stop-color="#0f766e"/>
+        <stop offset="85%" stop-color="#115e59"/>
+        <stop offset="100%" stop-color="#042f2e"/>
+      </linearGradient>
+      <radialGradient id="mist-nature" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#99f6e4" stop-opacity="0.35"/>
+        <stop offset="60%" stop-color="#14b8a6" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="600" height="800" fill="url(#bg-nature)"/>
+    <rect width="600" height="800" fill="url(#mist-nature)"/>
+    <!-- Dramatic mountain ridges in mist -->
+    <path d="M0 380 L180 230 L360 360 L600 180 L600 500 L0 500 Z" fill="#042f2e" opacity="0.5"/>
+    <path d="M0 430 L240 310 L450 420 L600 290 L600 560 L0 560 Z" fill="#022c22" opacity="0.75"/>
+    <!-- Fog layer -->
+    <ellipse cx="300" cy="410" rx="320" ry="30" fill="#ccfbf1" opacity="0.22" filter="blur(15px)"/>
+    <!-- Layered Pine Forest Silhouettes -->
+    <path d="M20 580 L40 500 L60 580 L90 480 L120 580 L160 510 L200 580 L250 490 L300 580 L350 480 L400 580 L460 500 L510 580 L560 490 L600 580 L600 800 L0 800 Z" fill="#021c17"/>
+    <!-- Foreground towering pine trees -->
+    <polygon points="80,420 50,680 110,680" fill="#011410"/>
+    <polygon points="80,480 40,740 120,740" fill="#011410"/>
+    <polygon points="520,380 480,680 560,680" fill="#011410"/>
+    <polygon points="520,450 470,750 570,750" fill="#011410"/>
+    <!-- Soaring eagle silhouette -->
+    <path d="M280 200 Q295 190 310 200 Q325 190 340 200 Q310 208 280 200 Z" fill="#022c22"/>
+    <!-- Tranquil glacial lake reflection at base -->
+    <rect x="0" y="680" width="600" height="120" fill="#042f2e"/>
+    <ellipse cx="300" cy="740" rx="200" ry="30" fill="#2dd4bf" opacity="0.18" filter="blur(16px)"/>
+  
+  <!-- Vignette & Grain Overlay -->
+  <rect width="100%" height="100%" fill="url(#vignette-nature)" />
+</svg>
