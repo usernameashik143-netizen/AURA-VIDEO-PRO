@@ -732,41 +732,58 @@ export class FFmpegService {
     let currentAudioTag = '[a0]';
     let runningDuration = probedClips[0].effectiveDuration;
 
-    // Apply real xfade and acrossfade between consecutive clips
+    // Apply real xfade and acrossfade between consecutive clips, or memory-efficient concat for cuts
     if (probedClips.length > 1) {
-      for (let i = 0; i < probedClips.length - 1; i++) {
-        const nextIdx = i + 1;
-        const nextClip = probedClips[nextIdx];
-        const prevClip = probedClips[i];
+      const hasAnyTransitions = probedClips.some((c, idx) => {
+        if (idx === probedClips.length - 1) return false;
+        const trPrev = c.transition;
+        const trNext = probedClips[idx + 1]?.transition;
+        const t = trPrev || trNext;
+        return t && t.type && t.type !== 'none' && (t.duration || 0) > 0.05;
+      });
 
-        const trPrev = (prevClip.transition && prevClip.transition.type && prevClip.transition.type !== 'none' && (prevClip.transition.duration || 0) > 0.05) ? prevClip.transition : null;
-        const trNext = (nextClip.transition && nextClip.transition.type && nextClip.transition.type !== 'none' && (nextClip.transition.duration || 0) > 0.05) ? nextClip.transition : null;
-        const activeTransition = trPrev || trNext;
+      if (!hasAnyTransitions) {
+        // Direct cut timeline: zero-buffer sequential concatenation (extremely fast & minimal RAM)
+        const concatInputs = probedClips.map((_, idx) => `[v${idx}][a${idx}]`).join('');
+        filterParts.push(`${concatInputs}concat=n=${probedClips.length}:v=1:a=1[vcat][acat]`);
+        currentVideoTag = '[vcat]';
+        currentAudioTag = '[acat]';
+        runningDuration = probedClips.reduce((sum, c) => sum + c.effectiveDuration, 0);
+      } else {
+        for (let i = 0; i < probedClips.length - 1; i++) {
+          const nextIdx = i + 1;
+          const nextClip = probedClips[nextIdx];
+          const prevClip = probedClips[i];
 
-        const isCut = !activeTransition;
-        const ffmpegTr = isCut ? 'fade' : this.mapTransitionType(activeTransition.type);
+          const trPrev = (prevClip.transition && prevClip.transition.type && prevClip.transition.type !== 'none' && (prevClip.transition.duration || 0) > 0.05) ? prevClip.transition : null;
+          const trNext = (nextClip.transition && nextClip.transition.type && nextClip.transition.type !== 'none' && (nextClip.transition.duration || 0) > 0.05) ? nextClip.transition : null;
+          const activeTransition = trPrev || trNext;
 
-        const maxAllowedDur = Math.min(prevClip.effectiveDuration, nextClip.effectiveDuration) * 0.45;
-        const requestedDur = isCut ? 0.02 : (activeTransition?.duration || 0.75);
-        const transitionDuration = isCut ? Math.min(0.02, maxAllowedDur) : Math.max(0.1, Math.min(requestedDur, maxAllowedDur));
+          const isCut = !activeTransition;
+          const ffmpegTr = isCut ? 'fade' : this.mapTransitionType(activeTransition.type);
 
-        const offset = Math.max(0.02, runningDuration - transitionDuration);
-        const outVTag = `[vx${i}]`;
-        const outATag = `[ax${i}]`;
+          const maxAllowedDur = Math.min(prevClip.effectiveDuration, nextClip.effectiveDuration) * 0.45;
+          const requestedDur = isCut ? 0.02 : (activeTransition?.duration || 0.75);
+          const transitionDuration = isCut ? Math.min(0.02, maxAllowedDur) : Math.max(0.1, Math.min(requestedDur, maxAllowedDur));
 
-        console.log(`[TRANSITION] clip ${i} (${prevClip.id}) -> clip ${nextIdx} (${nextClip.id}): type=${ffmpegTr}, duration=${transitionDuration.toFixed(3)}s, offset=${offset.toFixed(3)}s`);
+          const offset = Math.max(0.02, runningDuration - transitionDuration);
+          const outVTag = `[vx${i}]`;
+          const outATag = `[ax${i}]`;
 
-        filterParts.push(
-          `${currentVideoTag}[v${nextIdx}]xfade=transition=${ffmpegTr}:duration=${transitionDuration.toFixed(3)}:offset=${offset.toFixed(3)}${outVTag}`
-        );
+          console.log(`[TRANSITION] clip ${i} (${prevClip.id}) -> clip ${nextIdx} (${nextClip.id}): type=${ffmpegTr}, duration=${transitionDuration.toFixed(3)}s, offset=${offset.toFixed(3)}s`);
 
-        filterParts.push(
-          `${currentAudioTag}[a${nextIdx}]acrossfade=d=${transitionDuration.toFixed(3)}:c1=tri:c2=tri${outATag}`
-        );
+          filterParts.push(
+            `${currentVideoTag}[v${nextIdx}]xfade=transition=${ffmpegTr}:duration=${transitionDuration.toFixed(3)}:offset=${offset.toFixed(3)}${outVTag}`
+          );
 
-        currentVideoTag = outVTag;
-        currentAudioTag = outATag;
-        runningDuration = offset + nextClip.effectiveDuration;
+          filterParts.push(
+            `${currentAudioTag}[a${nextIdx}]acrossfade=d=${transitionDuration.toFixed(3)}:c1=tri:c2=tri${outATag}`
+          );
+
+          currentVideoTag = outVTag;
+          currentAudioTag = outATag;
+          runningDuration = offset + nextClip.effectiveDuration;
+        }
       }
     }
 
@@ -895,15 +912,15 @@ export class FFmpegService {
     const audioCodec = isWebM ? 'libopus' : 'aac';
 
     let crf = '22';
-    let preset = 'medium';
+    let preset = 'fast';
     if (quality === 'standard') { crf = '26'; preset = 'faster'; }
-    if (quality === 'high') { crf = '20'; preset = 'medium'; }
-    if (quality === 'maximum') { crf = '17'; preset = 'slow'; }
+    if (quality === 'high') { crf = '20'; preset = 'fast'; }
+    if (quality === 'maximum') { crf = '17'; preset = 'medium'; }
 
     const args = [
       '-y',
       '-threads',
-      '2',
+      '1',
       ...inputs,
       '-filter_complex',
       filterString,
@@ -913,7 +930,20 @@ export class FFmpegService {
       finalAudioTag,
       '-c:v',
       videoCodec,
-      ...(isWebM ? ['-crf', crf, '-b:v', '0', '-threads', '2'] : ['-preset', preset, '-crf', crf, '-pix_fmt', 'yuv420p', '-threads', '2']),
+      ...(isWebM
+        ? ['-crf', crf, '-b:v', '0', '-threads', '1']
+        : [
+            '-preset',
+            preset,
+            '-crf',
+            crf,
+            '-pix_fmt',
+            'yuv420p',
+            '-threads',
+            '1',
+            '-x264-params',
+            'bframes=0:ref=1:rc-lookahead=10:sync-lookahead=0',
+          ]),
       '-c:a',
       audioCodec,
       '-b:a',

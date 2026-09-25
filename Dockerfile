@@ -68,6 +68,7 @@ ENV HOST=0.0.0.0
 ENV PORT=5000
 ENV CLIENT_DIST_DIR=/app/client/dist
 ENV STORAGE_DIR=/app/server/storage
+ENV NODE_OPTIONS="--max-old-space-size=128"
 
 WORKDIR /app/server
 EXPOSE 5000
