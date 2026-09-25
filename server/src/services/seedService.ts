@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { SEEDS_DIR, THUMBNAILS_DIR, MEDIA_FILE, PROJECTS_FILE } from '../config.js';
+import { SEEDS_DIR, THUMBNAILS_DIR, UPLOADS_DIR, MEDIA_FILE, PROJECTS_FILE } from '../config.js';
 import { FFmpegService } from './ffmpegService.js';
 
 const execAsync = promisify(exec);
@@ -37,7 +37,35 @@ export class SeedService {
       }
     }
 
-    console.log('Verifying and seeding sample clips and background music...');
+    // Sanitize currentMedia: only keep items whose actual media files exist on disk
+    const sanitizedExisting: MediaItem[] = [];
+    for (const item of currentMedia) {
+      let resolvedPath: string | null = null;
+      if (item.filePath && fs.existsSync(item.filePath)) {
+        resolvedPath = item.filePath;
+      } else if (item.filePath) {
+        const base = path.basename(item.filePath);
+        const inSeeds = path.join(SEEDS_DIR, base);
+        const inUploads = path.join(UPLOADS_DIR, base);
+        if (fs.existsSync(inSeeds)) resolvedPath = inSeeds;
+        else if (fs.existsSync(inUploads)) resolvedPath = inUploads;
+      } else if (item.url) {
+        const base = path.basename(item.url);
+        const inSeeds = path.join(SEEDS_DIR, base);
+        const inUploads = path.join(UPLOADS_DIR, base);
+        if (fs.existsSync(inSeeds)) resolvedPath = inSeeds;
+        else if (fs.existsSync(inUploads)) resolvedPath = inUploads;
+      }
+
+      if (resolvedPath) {
+        sanitizedExisting.push({
+          ...item,
+          filePath: resolvedPath,
+        });
+      }
+    }
+
+    console.log(`Verifying and seeding sample clips and background music (found ${sanitizedExisting.length} valid existing items on disk)...`);
 
     const rootFont = path.resolve('arial.ttf');
     if (!fs.existsSync(rootFont) && fs.existsSync('C:/Windows/Fonts/arial.ttf')) {
@@ -81,7 +109,7 @@ export class SeedService {
       },
     ];
 
-    const seededItems: MediaItem[] = [...currentMedia];
+    const seededItems: MediaItem[] = [...sanitizedExisting];
 
     for (const clip of clipDefs) {
       const filePath = path.join(SEEDS_DIR, clip.filename);
@@ -125,7 +153,10 @@ export class SeedService {
         aspectRatio: probe.isPortrait ? '9:16' : '16:9',
       };
 
-      if (!seededItems.some((m) => m.id === item.id)) {
+      const existingIdx = seededItems.findIndex((m) => m.id === item.id || m.originalName === clip.filename);
+      if (existingIdx >= 0) {
+        seededItems[existingIdx] = { ...seededItems[existingIdx], ...item, filePath };
+      } else {
         seededItems.push(item);
       }
     }
@@ -245,134 +276,159 @@ export class SeedService {
         aspectRatio: 'audio',
       };
 
-      if (!seededItems.some((m) => m.id === audioItem.id)) {
+      const existingIdx = seededItems.findIndex((m) => m.id === audioItem.id || m.originalName === bgm.filename);
+      if (existingIdx >= 0) {
+        seededItems[existingIdx] = { ...seededItems[existingIdx], ...audioItem, filePath: bgmPath };
+      } else {
         seededItems.push(audioItem);
       }
     }
 
     fs.writeFileSync(MEDIA_FILE, JSON.stringify(seededItems, null, 2));
 
-    // Seed an initial demo project if projects.json does not exist
-    if (!fs.existsSync(PROJECTS_FILE)) {
-      const demoProject = {
-        id: 'demo-project-1',
-        title: 'Cinematic Reel 2026',
-        description: 'Auto-edited montage created with AuraVideo AI',
-        aspectRatio: '16:9',
-        resolution: '1080p',
-        fps: 30,
-        duration: 18,
-        thumbnailUrl: `/thumbnails/seed-clip-1.jpg`,
-        createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-        updatedAt: new Date().toISOString(),
-        tracks: [
-          {
-            id: 'track-video-1',
-            type: 'video',
-            name: 'Main Video',
-            clips: [
-              {
-                id: 'clip-1',
-                mediaId: 'seed-clip-1',
-                name: 'Cyberpunk Neon City',
-                url: '/seeds/cyberpunk_neon_city.mp4',
-                start: 0,
-                duration: 6,
-                trimStart: 0,
-                trimEnd: 6,
-                speed: 1,
-                volume: 1,
-                filter: 'cinematic',
-                transition: { type: 'dissolve', duration: 0.8 },
-              },
-              {
-                id: 'clip-2',
-                mediaId: 'seed-clip-2',
-                name: 'Nature Drone Mountains',
-                url: '/seeds/nature_drone_mountains.mp4',
-                start: 5.2,
-                duration: 7,
-                trimStart: 1,
-                trimEnd: 8,
-                speed: 1,
-                volume: 1,
-                filter: 'vibrant',
-                transition: { type: 'fade', duration: 0.8 },
-              },
-              {
-                id: 'clip-3',
-                mediaId: 'seed-clip-3',
-                name: 'Urban Street Vlog',
-                url: '/seeds/urban_street_vlog.mp4',
-                start: 11.4,
-                duration: 6.6,
-                trimStart: 0,
-                trimEnd: 6.6,
-                speed: 1,
-                volume: 1,
-                filter: 'warm',
-                transition: { type: 'none', duration: 0 },
-              },
-            ],
-          },
-          {
-            id: 'track-text-1',
-            type: 'text',
-            name: 'Titles & Captions',
-            clips: [
-              {
-                id: 'text-1',
-                text: 'AURA CINEMATIC CUT',
-                start: 0.5,
-                duration: 3.5,
-                style: {
-                  fontSize: 48,
-                  fontWeight: 'bold',
-                  fontFamily: 'Plus Jakarta Sans',
-                  color: '#ffffff',
-                  position: 'center',
-                  animation: 'pop',
-                },
-              },
-              {
-                id: 'text-2',
-                text: 'Shot on 8K Full Frame',
-                start: 5.5,
-                duration: 3.0,
-                style: {
-                  fontSize: 28,
-                  fontWeight: 'medium',
-                  fontFamily: 'Plus Jakarta Sans',
-                  color: '#94a3b8',
-                  position: 'bottom',
-                  animation: 'fade',
-                },
-              },
-            ],
-          },
-          {
-            id: 'track-audio-1',
-            type: 'audio',
-            name: 'Background Music',
-            clips: [
-              {
-                id: 'audio-1',
-                mediaId: 'seed-bgm-1',
-                name: 'Cinematic Horizon',
-                url: '/seeds/cinematic_horizon.mp3',
-                start: 0,
-                duration: 18,
-                trimStart: 0,
-                volume: 0.45,
-                fadeIn: 1.0,
-                fadeOut: 1.5,
-              },
-            ],
-          },
-        ],
-      };
-
-      fs.writeFileSync(PROJECTS_FILE, JSON.stringify([demoProject], null, 2));
+    // Seed and sanitize projects
+    let existingProjects: any[] = [];
+    if (fs.existsSync(PROJECTS_FILE)) {
+      try {
+        existingProjects = JSON.parse(fs.readFileSync(PROJECTS_FILE, 'utf-8'));
+      } catch {
+        existingProjects = [];
+      }
     }
+
+    const demoProject = {
+      id: 'demo-project-1',
+      title: 'Cinematic Reel 2026',
+      description: 'Auto-edited montage created with AuraVideo AI',
+      aspectRatio: '16:9',
+      resolution: '1080p',
+      fps: 30,
+      duration: 18,
+      thumbnailUrl: `/thumbnails/seed-clip-1.jpg`,
+      createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+      updatedAt: new Date().toISOString(),
+      tracks: [
+        {
+          id: 'track-video-1',
+          type: 'video',
+          name: 'Main Video',
+          clips: [
+            {
+              id: 'clip-1',
+              mediaId: 'seed-clip-1',
+              name: 'Cyberpunk Neon City',
+              url: '/seeds/cyberpunk_neon_city.mp4',
+              start: 0,
+              duration: 6,
+              trimStart: 0,
+              trimEnd: 6,
+              speed: 1,
+              volume: 1,
+              filter: 'cinematic',
+              transition: { type: 'dissolve', duration: 0.8 },
+            },
+            {
+              id: 'clip-2',
+              mediaId: 'seed-clip-2',
+              name: 'Nature Drone Mountains',
+              url: '/seeds/nature_drone_mountains.mp4',
+              start: 5.2,
+              duration: 7,
+              trimStart: 1,
+              trimEnd: 8,
+              speed: 1,
+              volume: 1,
+              filter: 'vibrant',
+              transition: { type: 'fade', duration: 0.8 },
+            },
+            {
+              id: 'clip-3',
+              mediaId: 'seed-clip-3',
+              name: 'Urban Street Vlog',
+              url: '/seeds/urban_street_vlog.mp4',
+              start: 11.4,
+              duration: 6.6,
+              trimStart: 0,
+              trimEnd: 6.6,
+              speed: 1,
+              volume: 1,
+              filter: 'warm',
+              transition: { type: 'none', duration: 0 },
+            },
+          ],
+        },
+        {
+          id: 'track-text-1',
+          type: 'text',
+          name: 'Titles & Captions',
+          clips: [
+            {
+              id: 'text-1',
+              text: 'AURA CINEMATIC CUT',
+              start: 0.5,
+              duration: 3.5,
+              style: {
+                fontSize: 48,
+                fontWeight: 'bold',
+                fontFamily: 'Plus Jakarta Sans',
+                color: '#ffffff',
+                position: 'center',
+                animation: 'pop',
+              },
+            },
+            {
+              id: 'text-2',
+              text: 'Shot on 8K Full Frame',
+              start: 5.5,
+              duration: 3.0,
+              style: {
+                fontSize: 28,
+                fontWeight: 'medium',
+                fontFamily: 'Plus Jakarta Sans',
+                color: '#94a3b8',
+                position: 'bottom',
+                animation: 'fade',
+              },
+            },
+          ],
+        },
+        {
+          id: 'track-audio-1',
+          type: 'audio',
+          name: 'Background Music',
+          clips: [
+            {
+              id: 'audio-1',
+              mediaId: 'seed-bgm-1',
+              name: 'Cinematic Horizon',
+              url: '/seeds/cinematic_horizon.mp3',
+              start: 0,
+              duration: 18,
+              trimStart: 0,
+              volume: 0.45,
+              fadeIn: 1.0,
+              fadeOut: 1.5,
+            },
+          ],
+        },
+      ],
+    };
+
+    // Filter projects: only keep projects whose video clips actually resolve on disk
+    const validProjects = existingProjects.filter((p) => {
+      const vTrack = p.tracks?.find((t: any) => t.type === 'video');
+      if (!vTrack || !Array.isArray(vTrack.clips) || vTrack.clips.length === 0) return true;
+      return vTrack.clips.every((c: any) => {
+        const url = c.url || '';
+        const base = path.basename(url || c.filePath || '');
+        return fs.existsSync(path.join(SEEDS_DIR, base)) || fs.existsSync(path.join(UPLOADS_DIR, base)) || (c.filePath && fs.existsSync(c.filePath));
+      });
+    });
+
+    if (!validProjects.some((p) => p.id === 'demo-project-1')) {
+      validProjects.unshift(demoProject);
+    }
+
+    fs.writeFileSync(PROJECTS_FILE, JSON.stringify(validProjects, null, 2));
   }
 }

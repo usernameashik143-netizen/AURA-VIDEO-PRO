@@ -48,6 +48,11 @@ app.all('/api/*', (req, res) => {
   res.status(404).json({ success: false, error: `Cannot ${req.method} ${req.originalUrl}` });
 });
 
+// Prevent SPA fallback from returning HTML for missing static media assets
+app.all(['/uploads/*', '/thumbnails/*', '/exports/*', '/seeds/*'], (req, res) => {
+  res.status(404).json({ success: false, error: `Asset not found: ${req.originalUrl}` });
+});
+
 // Production frontend serving (SPA fallback)
 if (fs.existsSync(CLIENT_DIST_DIR)) {
   console.log(`📦 Serving production frontend from ${CLIENT_DIST_DIR}`);
