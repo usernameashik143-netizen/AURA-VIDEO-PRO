@@ -692,10 +692,10 @@ export class FFmpegService {
       const speedFilter = c.speed !== 1 ? `,setpts=${(1 / c.speed).toFixed(4)}*(PTS-STARTPTS)` : ',setpts=PTS-STARTPTS';
       const colorFilter = this.getFilterColorString(c);
 
-      // Canvas aspect ratio scaling
-      let scalePadFilter = `scale=${width}:${height}:force_original_aspect_ratio=decrease,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2:color=${backgroundColor}`;
+      // Canvas aspect ratio scaling (guarantee even dimensions for yuv420p chroma subsampling)
+      let scalePadFilter = `scale=${width}:${height}:force_original_aspect_ratio=decrease:force_divisible_by=2,pad=${width}:${height}:trunc((ow-iw)/4)*2:trunc((oh-ih)/4)*2:color=${backgroundColor}`;
       if (canvasMode === 'fill') {
-        scalePadFilter = `scale=${width}:${height}:force_original_aspect_ratio=increase,crop=${width}:${height}`;
+        scalePadFilter = `scale=${width}:${height}:force_original_aspect_ratio=increase:force_divisible_by=2,crop=${width}:${height}`;
       }
 
       // Video filtergraph
@@ -783,8 +783,8 @@ export class FFmpegService {
         const ovDur = ov.duration || 5;
         const ovEnd = ovStart + ovDur;
         const ovScale = ov.scale || 0.4;
-        const ovW = Math.round(width * ovScale);
-        const ovH = Math.round(height * ovScale);
+        const ovW = Math.round((width * ovScale) / 2) * 2;
+        const ovH = Math.round((height * ovScale) / 2) * 2;
         const posX = ov.positionX !== undefined ? `(W-w)/2+(${ov.positionX})` : '(W-w)/2';
         const posY = ov.positionY !== undefined ? `(H-h)/2+(${ov.positionY})` : '(H-h)/2';
         const ovAlpha = ov.opacity !== undefined ? ov.opacity : 1.0;
@@ -861,7 +861,7 @@ export class FFmpegService {
           );
         } else {
           const inputIdx = nextInputIdx++;
-          inputs.push('-stream_loop', '-1', '-i', track.filePath);
+          inputs.push('-stream_loop', '-1', '-vn', '-i', track.filePath);
           let extraFilters = '';
           if (track.normalize) extraFilters += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 

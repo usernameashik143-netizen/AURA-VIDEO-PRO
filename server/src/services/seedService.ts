@@ -138,7 +138,7 @@ export class SeedService {
         name: 'Cinematic Horizon',
         duration: 30,
         category: 'Cinematic',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=55:d=30" -f lavfi -i "sine=f=110:d=30" -f lavfi -i "sine=f=164.81:d=30" -f lavfi -i "sine=f=220:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.08" -filter_complex "[4:a]lowpass=f=200,tremolo=f=1.67:d=0.9[perc];[0:a][1:a][2:a][3:a][perc]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.8:0.7:140:0.4,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=55:d=30" -f lavfi -i "sine=f=110:d=30" -f lavfi -i "sine=f=164.81:d=30" -f lavfi -i "sine=f=220:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.08" -filter_complex "[4:a]lowpass=f=200,tremolo=f=1.67:d=0.9[perc];[0:a][1:a][2:a][3:a][perc]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.8:0.7:140:0.4,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-2',
@@ -146,7 +146,7 @@ export class SeedService {
         name: 'Lo-Fi Night Drive',
         duration: 30,
         category: 'Lo-Fi',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=146.83:d=30" -f lavfi -i "sine=f=220.00:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=349.23:d=30" -f lavfi -i "anoisesrc=d=30:c=pink:a=0.03" -f lavfi -i "anoisesrc=d=30:c=white:a=0.07" -filter_complex "[4:a]lowpass=f=2800[crackle];[5:a]bandpass=f=1200:w=400,tremolo=f=1.37:d=0.95[snare];[0:a][1:a][2:a][3:a][crackle][snare]amix=inputs=6:dropout_transition=0:normalize=0,lowpass=f=2200,tremolo=f=2.0:d=0.35,aecho=0.7:0.6:80|160:0.3|0.2,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=146.83:d=30" -f lavfi -i "sine=f=220.00:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=349.23:d=30" -f lavfi -i "anoisesrc=d=30:c=pink:a=0.03" -f lavfi -i "anoisesrc=d=30:c=white:a=0.07" -filter_complex "[4:a]lowpass=f=2800[crackle];[5:a]bandpass=f=1200:w=400,tremolo=f=1.37:d=0.95[snare];[0:a][1:a][2:a][3:a][crackle][snare]amix=inputs=6:dropout_transition=0:normalize=0,lowpass=f=2200,tremolo=f=2.0:d=0.35,aecho=0.7:0.6:80|160:0.3|0.2,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-3',
@@ -154,7 +154,7 @@ export class SeedService {
         name: 'Energetic Reel Beat',
         duration: 30,
         category: 'Energetic',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=65.41:d=30" -f lavfi -i "sine=f=130.81:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=523.25:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.12" -filter_complex "[5:a]highpass=f=2000,tremolo=f=4.26:d=0.9[clap];[0:a][1:a][2:a][3:a][4:a][clap]amix=inputs=6:dropout_transition=0:normalize=0,tremolo=f=4.26:d=0.7,aecho=0.8:0.7:50:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=65.41:d=30" -f lavfi -i "sine=f=130.81:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=523.25:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.12" -filter_complex "[5:a]highpass=f=2000,tremolo=f=4.26:d=0.9[clap];[0:a][1:a][2:a][3:a][4:a][clap]amix=inputs=6:dropout_transition=0:normalize=0,tremolo=f=4.26:d=0.7,aecho=0.8:0.7:50:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-4',
@@ -162,7 +162,7 @@ export class SeedService {
         name: 'Chill Travel Breeze',
         duration: 30,
         category: 'Travel',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=196.00:d=30" -f lavfi -i "sine=f=246.94:d=30" -f lavfi -i "sine=f=293.66:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.05" -filter_complex "[4:a]bandpass=f=6000:w=2000,tremolo=f=3.5:d=0.8[shaker];[0:a][1:a][2:a][3:a][shaker]amix=inputs=5:dropout_transition=0:normalize=0,volume=0.9,chorus=0.7:0.9:55:0.4:0.25:2,aecho=0.8:0.7:120:0.35,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=196.00:d=30" -f lavfi -i "sine=f=246.94:d=30" -f lavfi -i "sine=f=293.66:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.05" -filter_complex "[4:a]bandpass=f=6000:w=2000,tremolo=f=3.5:d=0.8[shaker];[0:a][1:a][2:a][3:a][shaker]amix=inputs=5:dropout_transition=0:normalize=0,volume=0.9,chorus=0.7:0.9:55:0.4:0.25:2,aecho=0.8:0.7:120:0.35,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-5',
@@ -170,7 +170,7 @@ export class SeedService {
         name: 'Emotional Piano Reflection',
         duration: 30,
         category: 'Emotional',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=110.00:d=30" -f lavfi -i "sine=f=220.00:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=440.00:d=30" -filter_complex "[0:a][1:a][2:a][3:a][4:a]amix=inputs=5:dropout_transition=0:normalize=0,volume=0.85,tremolo=f=1.2:d=0.3,aecho=0.85:0.8:200|400:0.4|0.25,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=110.00:d=30" -f lavfi -i "sine=f=220.00:d=30" -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=440.00:d=30" -filter_complex "[0:a][1:a][2:a][3:a][4:a]amix=inputs=5:dropout_transition=0:normalize=0,volume=0.85,tremolo=f=1.2:d=0.3,aecho=0.85:0.8:200|400:0.4|0.25,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-6',
@@ -178,7 +178,7 @@ export class SeedService {
         name: 'Fashion Runway House',
         duration: 30,
         category: 'Fashion',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=61.74:d=30" -f lavfi -i "sine=f=123.47:d=30" -f lavfi -i "sine=f=246.94:d=30" -f lavfi -i "sine=f=370.00:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.1" -filter_complex "[4:a]highpass=f=7500,tremolo=f=8.27:d=0.95[hihat];[0:a][1:a][2:a][3:a][hihat]amix=inputs=5:dropout_transition=0:normalize=0,flanger=delay=3:depth=2:regen=45,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=61.74:d=30" -f lavfi -i "sine=f=123.47:d=30" -f lavfi -i "sine=f=246.94:d=30" -f lavfi -i "sine=f=370.00:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.1" -filter_complex "[4:a]highpass=f=7500,tremolo=f=8.27:d=0.95[hihat];[0:a][1:a][2:a][3:a][hihat]amix=inputs=5:dropout_transition=0:normalize=0,flanger=delay=3:depth=2:regen=45,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-7',
@@ -186,7 +186,7 @@ export class SeedService {
         name: 'Creator Vlog Ukulele',
         duration: 30,
         category: 'Vlog',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=523.25:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.09" -f lavfi -i "sine=f=880.00:d=30" -filter_complex "[4:a]bandpass=f=2400:w=800,tremolo=f=3.83:d=0.9[claps];[5:a]tremolo=f=5:d=0.5,volume=0.3[whistle];[0:a][1:a][2:a][3:a][claps][whistle]amix=inputs=6:dropout_transition=0:normalize=0,aecho=0.7:0.6:80:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=523.25:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.09" -f lavfi -i "sine=f=880.00:d=30" -filter_complex "[4:a]bandpass=f=2400:w=800,tremolo=f=3.83:d=0.9[claps];[5:a]tremolo=f=5:d=0.5,volume=0.3[whistle];[0:a][1:a][2:a][3:a][claps][whistle]amix=inputs=6:dropout_transition=0:normalize=0,aecho=0.7:0.6:80:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-8',
@@ -194,7 +194,7 @@ export class SeedService {
         name: 'Documentary Ambient Pulse',
         duration: 30,
         category: 'Documentary',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=55.00:d=30" -f lavfi -i "sine=f=82.41:d=30" -f lavfi -i "sine=f=110.00:d=30" -f lavfi -i "sine=f=164.81:d=30" -f lavfi -i "sine=f=50.00:d=30" -filter_complex "[4:a]tremolo=f=1.5:d=0.95[pulse];[0:a][1:a][2:a][3:a][pulse]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.9:0.85:300|600:0.5|0.35,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=55.00:d=30" -f lavfi -i "sine=f=82.41:d=30" -f lavfi -i "sine=f=110.00:d=30" -f lavfi -i "sine=f=164.81:d=30" -f lavfi -i "sine=f=50.00:d=30" -filter_complex "[4:a]tremolo=f=1.5:d=0.95[pulse];[0:a][1:a][2:a][3:a][pulse]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.9:0.85:300|600:0.5|0.35,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-9',
@@ -202,7 +202,7 @@ export class SeedService {
         name: 'Sunshine Acoustic Joy',
         duration: 30,
         category: 'Happy',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=493.88:d=30" -f lavfi -i "sine=f=587.33:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.08" -filter_complex "[5:a]highpass=f=5000,tremolo=f=4.0:d=0.85[tamb];[0:a][1:a][2:a][3:a][4:a][tamb]amix=inputs=6:dropout_transition=0:normalize=0,volume=0.9,aecho=0.8:0.7:100:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=261.63:d=30" -f lavfi -i "sine=f=329.63:d=30" -f lavfi -i "sine=f=392.00:d=30" -f lavfi -i "sine=f=493.88:d=30" -f lavfi -i "sine=f=587.33:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.08" -filter_complex "[5:a]highpass=f=5000,tremolo=f=4.0:d=0.85[tamb];[0:a][1:a][2:a][3:a][4:a][tamb]amix=inputs=6:dropout_transition=0:normalize=0,volume=0.9,aecho=0.8:0.7:100:0.3,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
       {
         id: 'seed-bgm-10',
@@ -210,7 +210,7 @@ export class SeedService {
         name: 'Dramatic Hybrid Trailer',
         duration: 30,
         category: 'Dramatic',
-        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=43.65:d=30" -f lavfi -i "sine=f=87.31:d=30" -f lavfi -i "sine=f=130.81:d=30" -f lavfi -i "sine=f=174.61:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.15" -filter_complex "[4:a]lowpass=f=250,tremolo=f=2.25:d=0.95[impact];[0:a][1:a][2:a][3:a][impact]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.85:0.75:180:0.4,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a mp3 -b:a 192k`,
+        synthCmd: `ffmpeg -y -f lavfi -i "sine=f=43.65:d=30" -f lavfi -i "sine=f=87.31:d=30" -f lavfi -i "sine=f=130.81:d=30" -f lavfi -i "sine=f=174.61:d=30" -f lavfi -i "anoisesrc=d=30:c=white:a=0.15" -filter_complex "[4:a]lowpass=f=250,tremolo=f=2.25:d=0.95[impact];[0:a][1:a][2:a][3:a][impact]amix=inputs=5:dropout_transition=0:normalize=0,aecho=0.85:0.75:180:0.4,loudnorm=I=-14:TP=-0.5:LRA=7" -t 30 -c:a libmp3lame -b:a 192k`,
       },
     ];
 
@@ -218,12 +218,11 @@ export class SeedService {
       const bgmPath = path.join(SEEDS_DIR, bgm.filename);
       if (!fs.existsSync(bgmPath)) {
         try {
-          const fullCmd = bgm.synthCmd.replace(/" -t 30 -c:a mp3/, `" "${bgmPath}" -t 30 -c:a mp3`).replace(/" -filter_complex/, `" -filter_complex`).replace(/"\s*$/, ` "${bgmPath}"`);
           await execAsync(`${bgm.synthCmd} "${bgmPath}"`);
         } catch (e: any) {
           // If specific syntax needed, simple fallback
           try {
-            await execAsync(`ffmpeg -y -f lavfi -i "sine=f=220:d=30" -t 30 -c:a mp3 -b:a 192k "${bgmPath}"`);
+            await execAsync(`ffmpeg -y -f lavfi -i "sine=f=220:d=30" -t 30 -c:a libmp3lame -b:a 192k "${bgmPath}"`);
           } catch {}
         }
       }

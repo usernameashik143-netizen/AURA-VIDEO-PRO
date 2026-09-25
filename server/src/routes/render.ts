@@ -140,9 +140,23 @@ router.post(['/', '/start'], async (req, res) => {
       if (candidatePath && fs.existsSync(candidatePath)) {
         return candidatePath;
       }
+      if (candidatePath) {
+        const base = path.basename(candidatePath);
+        const inSeeds = path.join(SEEDS_DIR, base);
+        if (fs.existsSync(inSeeds)) return inSeeds;
+        const inUploads = path.join(UPLOADS_DIR, base);
+        if (fs.existsSync(inUploads)) return inUploads;
+      }
       if (item.mediaId) {
         const m = mediaMap.get(item.mediaId);
         if (m && fs.existsSync(m.filePath)) return m.filePath;
+        if (m && m.filePath) {
+          const base = path.basename(m.filePath);
+          const inSeeds = path.join(SEEDS_DIR, base);
+          if (fs.existsSync(inSeeds)) return inSeeds;
+          const inUploads = path.join(UPLOADS_DIR, base);
+          if (fs.existsSync(inUploads)) return inUploads;
+        }
       }
       const rawUrl = item.url || item.src;
       if (rawUrl) {

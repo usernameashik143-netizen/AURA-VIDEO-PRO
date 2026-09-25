@@ -50,6 +50,9 @@ RUN cd server && npm install --omit=dev
 COPY --from=server-builder /build/server/dist ./server/dist
 COPY server/arial.ttf ./server/arial.ttf
 
+# Copy pre-seeded sample media and background music
+COPY server/storage/seeds ./server/storage/seeds
+
 # Copy compiled frontend distribution
 COPY --from=client-builder /build/client/dist ./client/dist
 
