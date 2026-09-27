@@ -1086,7 +1086,6 @@ export class FFmpegService {
 
     const args = [
       '-y',
-      '-noautoscale',
       '-filter_complex_threads',
       '1',
       '-threads',
