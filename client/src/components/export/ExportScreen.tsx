@@ -265,7 +265,7 @@ export const ExportScreen: React.FC = () => {
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <a
-                    href={`/api/render/download/${activeRenderJob.jobId}`}
+                    href={activeRenderJob.downloadUrl || `/api/render/download/${activeRenderJob.jobId}`}
                     download
                     className="flex-1 py-3 px-5 rounded-xl font-bold text-xs bg-zinc-100 hover:bg-white text-zinc-950 flex items-center justify-center gap-2 border border-zinc-300 shadow-sm transition-all"
                   >

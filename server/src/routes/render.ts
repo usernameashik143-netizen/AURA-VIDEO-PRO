@@ -146,7 +146,8 @@ router.post(['/', '/start'], async (req, res) => {
     const outputFilePath = path.join(EXPORTS_DIR, outputFilename);
 
     // Robust media path resolver
-    const resolveMediaPath = (item: { filePath?: string; url?: string; mediaId?: string; src?: string; id?: string; name?: string }): string | undefined => {
+    const resolveMediaPath = (item: { filePath?: string; url?: string; mediaId?: string; src?: string; id?: string; name?: string; originalName?: string }): string | undefined => {
+      if (!item) return undefined;
       const candidatePath = item.filePath || (item as any).path;
       if (candidatePath && fs.existsSync(candidatePath)) {
         return candidatePath;
@@ -171,80 +172,91 @@ router.post(['/', '/start'], async (req, res) => {
       }
       const rawUrl = item.url || item.src;
       if (rawUrl) {
-        // Match /seeds/ or /storage/seeds/
-        const seedMatch = rawUrl.match(/(?:storage\/seeds\/|seeds\/)([^/?#]+)/);
+        // Strip origin if full URL
+        const cleanUrl = rawUrl.replace(/^https?:\/\/[^/]+/i, '');
+        const seedMatch = cleanUrl.match(/(?:storage\/seeds\/|seeds\/)([^/?#]+)/i);
         if (seedMatch) {
           const p = path.join(SEEDS_DIR, seedMatch[1]);
           if (fs.existsSync(p)) return p;
         }
-        // Match /uploads/ or /storage/uploads/
-        const uploadMatch = rawUrl.match(/(?:storage\/uploads\/|uploads\/)([^/?#]+)/);
+        const uploadMatch = cleanUrl.match(/(?:storage\/uploads\/|uploads\/)([^/?#]+)/i);
         if (uploadMatch) {
           const p = path.join(UPLOADS_DIR, uploadMatch[1]);
           if (fs.existsSync(p)) return p;
         }
-        // Direct seeds check
-        if (rawUrl.startsWith('/seeds/')) {
-          const fname = rawUrl.replace(/^\/seeds\//, '');
-          const p = path.join(SEEDS_DIR, fname);
-          if (fs.existsSync(p)) return p;
-        }
-        // Direct uploads check
-        if (rawUrl.startsWith('/uploads/')) {
-          const fname = rawUrl.replace(/^\/uploads\//, '');
-          const p = path.join(UPLOADS_DIR, fname);
-          if (fs.existsSync(p)) return p;
-        }
+        const urlBase = path.basename(cleanUrl);
+        const inUploads = path.join(UPLOADS_DIR, urlBase);
+        if (fs.existsSync(inUploads)) return inUploads;
+        const inSeeds = path.join(SEEDS_DIR, urlBase);
+        if (fs.existsSync(inSeeds)) return inSeeds;
+
         // Match by URL in mediaMap
-        const m = Array.from(mediaMap.values()).find((media) => media.url === rawUrl);
+        const m = Array.from(mediaMap.values()).find((media) => media.url === rawUrl || media.url === cleanUrl);
         if (m && fs.existsSync(m.filePath)) return m.filePath;
       }
       // Check if item.id matches an item in the audio library catalog
       if (item.id) {
         const catItem = AudioService.getLibrary().find((c) => c.id === item.id);
         if (catItem && catItem.url) {
-          const seedMatch = catItem.url.match(/(?:storage\/seeds\/|seeds\/)([^/?#]+)/);
+          const seedMatch = catItem.url.match(/(?:storage\/seeds\/|seeds\/)([^/?#]+)/i);
           if (seedMatch) {
             const p = path.join(SEEDS_DIR, seedMatch[1]);
             if (fs.existsSync(p)) return p;
           }
         }
       }
-      // Check if item.name matches any seed mp3 file
-      if (item.name) {
-        const cleanName = item.name.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+      // Check if item.name or originalName matches any seed or upload file
+      const searchName = (item.originalName || item.name || '').toLowerCase().replace(/[^a-z0-9_.-]/g, '');
+      if (searchName) {
         if (fs.existsSync(SEEDS_DIR)) {
           const seedFiles = fs.readdirSync(SEEDS_DIR);
           const match = seedFiles.find(
             (f) =>
-              f.toLowerCase().includes(cleanName) ||
-              cleanName.includes(f.toLowerCase().replace('.mp3', ''))
+              f.toLowerCase() === searchName ||
+              f.toLowerCase().includes(searchName) ||
+              searchName.includes(f.toLowerCase().replace(/\.[^.]+$/, ''))
           );
-          if (match) {
-            return path.join(SEEDS_DIR, match);
-          }
+          if (match) return path.join(SEEDS_DIR, match);
+        }
+        if (fs.existsSync(UPLOADS_DIR)) {
+          const uploadFiles = fs.readdirSync(UPLOADS_DIR);
+          const match = uploadFiles.find(
+            (f) =>
+              f.toLowerCase() === searchName ||
+              f.toLowerCase().includes(searchName) ||
+              searchName.includes(f.toLowerCase().replace(/\.[^.]+$/, ''))
+          );
+          if (match) return path.join(UPLOADS_DIR, match);
         }
       }
       return undefined;
     };
 
-    // Resolve filePaths for clips
+    // Resolve filePaths for clips with deterministic normalization
     const resolvedClips: RenderClipItem[] = [];
     for (const clip of clips) {
       const resolvedPath = resolveMediaPath(clip);
 
       if (resolvedPath && fs.existsSync(resolvedPath)) {
+        const rawTrimStart = typeof clip.trimStart === 'number' && !isNaN(clip.trimStart) ? Math.max(0, clip.trimStart) : 0;
+        const rawDur = typeof clip.duration === 'number' && !isNaN(clip.duration) && clip.duration > 0 ? clip.duration : 5;
+        let rawTrimEnd = typeof clip.trimEnd === 'number' && !isNaN(clip.trimEnd) ? clip.trimEnd : rawTrimStart + rawDur;
+        if (rawTrimEnd <= rawTrimStart) rawTrimEnd = rawTrimStart + rawDur;
+
+        const rawSpeed = typeof clip.speed === 'number' && !isNaN(clip.speed) && clip.speed > 0 ? Math.min(4.0, Math.max(0.25, clip.speed)) : 1;
+        const rawVol = clip.isMuted ? 0 : (typeof clip.volume === 'number' && !isNaN(clip.volume) ? Math.max(0, clip.volume) : 1);
+
         resolvedClips.push({
-          id: clip.id,
+          id: clip.id || `clip-${resolvedClips.length + 1}`,
           filePath: resolvedPath,
-          start: clip.start || 0,
-          trimStart: clip.trimStart || 0,
-          trimEnd: clip.trimEnd || (clip.duration ? (clip.trimStart || 0) + clip.duration : 5),
-          duration: clip.duration || 5,
-          speed: clip.speed || 1,
-          volume: clip.volume !== undefined ? clip.volume : 1,
-          isMuted: clip.isMuted,
-          filter: clip.filter,
+          start: typeof clip.start === 'number' && !isNaN(clip.start) ? Math.max(0, clip.start) : 0,
+          trimStart: rawTrimStart,
+          trimEnd: rawTrimEnd,
+          duration: rawDur,
+          speed: rawSpeed,
+          volume: rawVol,
+          isMuted: Boolean(clip.isMuted || rawVol <= 0.001),
+          filter: clip.filter || 'none',
           filterIntensity: clip.filterIntensity,
           transition: clip.transition,
           crop: clip.crop,
@@ -277,24 +289,29 @@ router.post(['/', '/start'], async (req, res) => {
       });
     }
 
-    // Resolve audio tracks
+    // Resolve audio tracks (BGM) - only include active, positive volume, existing files
     const resolvedAudio: RenderAudioItem[] = [];
     for (const audio of audioTracks) {
-      const resolvedPath = resolveMediaPath(audio);
+      if (!audio || audio.isMuted) continue;
+      const vol = typeof audio.volume === 'number' && !isNaN(audio.volume) ? audio.volume : 0.8;
+      if (vol <= 0.001) continue;
 
+      const resolvedPath = resolveMediaPath(audio);
       if (resolvedPath && fs.existsSync(resolvedPath)) {
         resolvedAudio.push({
-          id: audio.id,
+          id: audio.id || `audio-${resolvedAudio.length + 1}`,
           filePath: resolvedPath,
-          start: audio.start || 0,
-          trimStart: audio.trimStart || 0,
-          duration: audio.duration || 30,
-          volume: audio.isMuted ? 0 : (audio.volume !== undefined ? audio.volume : 0.8),
-          isMuted: audio.isMuted,
-          fadeIn: audio.fadeIn || 0.5,
-          fadeOut: audio.fadeOut || 1.0,
-          normalize: audio.normalize,
+          start: typeof audio.start === 'number' && !isNaN(audio.start) ? Math.max(0, audio.start) : 0,
+          trimStart: typeof audio.trimStart === 'number' && !isNaN(audio.trimStart) ? Math.max(0, audio.trimStart) : 0,
+          duration: typeof audio.duration === 'number' && !isNaN(audio.duration) && audio.duration > 0 ? audio.duration : 30,
+          volume: vol,
+          isMuted: false,
+          fadeIn: typeof audio.fadeIn === 'number' && !isNaN(audio.fadeIn) ? Math.max(0, audio.fadeIn) : 0.5,
+          fadeOut: typeof audio.fadeOut === 'number' && !isNaN(audio.fadeOut) ? Math.max(0, audio.fadeOut) : 1.0,
+          normalize: Boolean(audio.normalize),
         });
+      } else {
+        console.warn(`[RENDER_WARNING] Audio track ${audio.id || audio.name || 'unnamed'} could not be resolved on disk, skipping BGM.`);
       }
     }
 
@@ -320,14 +337,24 @@ router.post(['/', '/start'], async (req, res) => {
       }
     }
 
-    // Diagnostic logging
-    console.log(`[RENDER PAYLOAD] Job ID: ${jobId}, Title: ${title}`);
-    console.log(`[RENDER PAYLOAD] Clips count: ${resolvedClips.length}, Overlays count: ${resolvedOverlays.length}, Audio tracks count: ${resolvedAudio.length}`);
-    console.log(`[RENDER PAYLOAD] Transitions:`, resolvedClips.map((c) => ({ id: c.id, transition: c.transition?.type || 'none', dur: c.transition?.duration })));
-    console.log(`[RENDER PAYLOAD] Filters/Effects:`, resolvedClips.map((c) => ({ id: c.id, filter: c.filter, effects: c.effects?.map((e) => e.type) })));
-    resolvedAudio.forEach((a) => {
-      console.log(`[BGM] requested track: ${a.id}, resolved file: ${a.filePath}, duration: ${a.duration}s, volume: ${a.volume}, start: ${a.start}s, trim: ${a.trimStart}s`);
-    });
+    // Structured logging for every render (Phase 1 requirement)
+    const bgmActive = resolvedAudio.length > 0;
+    const bgmPath = bgmActive ? resolvedAudio.map((a) => a.filePath).join(', ') : 'none';
+    const transitionCount = resolvedClips.filter(
+      (c, i) => i < resolvedClips.length - 1 && c.transition && c.transition.type && c.transition.type !== 'none'
+    ).length;
+    const filterStyles = resolvedClips.map((c) => c.filter || 'none').join(', ');
+
+    console.log(`[RENDER_START]`);
+    console.log(`jobId: ${jobId}`);
+    console.log(`clip count: ${resolvedClips.length}`);
+    console.log(`resolution: ${resolution}`);
+    console.log(`fps: ${fps}`);
+    console.log(`BGM enabled/disabled: ${bgmActive ? 'enabled' : 'disabled'}`);
+    console.log(`BGM URL/path: ${bgmPath}`);
+    console.log(`transition count: ${transitionCount}`);
+    console.log(`filter/style: ${filterStyles}`);
+    console.log(`output path: ${outputFilePath}`);
 
     const job: RenderJob = {
       id: jobId,
@@ -377,7 +404,7 @@ router.post(['/', '/start'], async (req, res) => {
         }
       })
       .catch((err) => {
-        console.error(`Render job ${jobId} failed:`, err);
+        console.error(`[RENDER_ERROR] Render job ${jobId} failed:`, err);
         job.status = 'failed';
         job.error = err.message || 'Render pipeline failed';
       });
@@ -394,6 +421,25 @@ router.post(['/', '/start'], async (req, res) => {
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
   }
+});
+
+/**
+ * GET /api/render or /api/render/jobs - list all active and recent render jobs
+ */
+router.get(['/', '/jobs'], (req, res) => {
+  const jobsList = Array.from(activeJobs.values()).map((j) => ({
+    id: j.id,
+    projectId: j.projectId,
+    status: j.status,
+    stage: j.stage,
+    progress: j.progress,
+    error: j.error,
+    startedAt: j.startedAt,
+    completedAt: j.completedAt,
+    fileSize: j.fileSize,
+    downloadUrl: j.downloadUrl,
+  }));
+  res.json({ success: true, count: jobsList.length, data: jobsList });
 });
 
 /**

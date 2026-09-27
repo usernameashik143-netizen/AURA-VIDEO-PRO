@@ -633,6 +633,7 @@ export class FFmpegService {
    */
   static async renderVideo(opts: RenderJobOptions): Promise<string> {
     const {
+      jobId = 'job-render',
       clips,
       overlayClips = [],
       audioTracks = [],
@@ -819,39 +820,89 @@ export class FFmpegService {
     }
 
     // Text & Captions rendering
-    const textItems = [
-      ...textClips.map((t) => ({
-        text: t.text,
-        start: t.start,
-        end: t.start + t.duration,
-        style: t.style,
-      })),
-      ...captions.map((c) => ({
-        text: c.text,
-        start: c.start,
-        end: c.end,
-        style: c.style,
-      })),
+    const textItems: Array<{
+      text: string;
+      start: number;
+      end: number;
+      style?: any;
+    }> = [];
+
+    if (Array.isArray(textClips)) {
+      textClips.forEach((t) => {
+        if (!t || !t.text || !t.text.trim()) return;
+        const start = typeof t.start === 'number' && !isNaN(t.start) ? Math.max(0, t.start) : 0;
+        const duration = typeof t.duration === 'number' && !isNaN(t.duration) ? Math.max(0.5, t.duration) : 3;
+        const end = typeof (t as any).end === 'number' && !isNaN((t as any).end) ? (t as any).end : start + duration;
+        textItems.push({
+          text: t.text,
+          start,
+          end: Math.max(start + 0.1, end),
+          style: t.style,
+        });
+      });
+    }
+
+    if (Array.isArray(captions)) {
+      captions.forEach((c) => {
+        if (!c || !c.text || !c.text.trim()) return;
+        const start = typeof c.start === 'number' && !isNaN(c.start) ? Math.max(0, c.start) : 0;
+        const end = typeof c.end === 'number' && !isNaN(c.end)
+          ? c.end
+          : typeof (c as any).duration === 'number' && !isNaN((c as any).duration)
+            ? start + (c as any).duration
+            : start + 2;
+        textItems.push({
+          text: c.text,
+          start,
+          end: Math.max(start + 0.1, end),
+          style: c.style,
+        });
+      });
+    }
+
+    let fontFile = '';
+    const candidateFonts = [
+      'server/arial.ttf',
+      path.join(process.cwd(), 'server', 'arial.ttf'),
+      'arial.ttf',
+      '/usr/share/fonts/truetype/freefont/FreeSans.ttf',
+      '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
     ];
+    for (const f of candidateFonts) {
+      if (fs.existsSync(f)) {
+        fontFile = f;
+        break;
+      }
+    }
+    const fontOpt = fontFile ? `fontfile='${fontFile}':` : '';
 
     if (textItems.length > 0) {
       textItems.forEach((ti, tIdx) => {
-        if (!ti.text || !ti.text.trim()) return;
-        const cleanText = ti.text.replace(/'/g, "'\\\\''").replace(/:/g, '\\:').replace(/;/g, '\\;');
-        const fontSize = ti.style?.fontSize || 38;
-        const fontColor = ti.style?.color || 'white';
-        let yExpr = '(h-text_h)/2';
-        if (ti.style?.position === 'top') yExpr = 'h*0.15';
-        if (ti.style?.position === 'bottom') yExpr = 'h*0.82';
-        if (ti.style?.posY !== undefined) yExpr = `h*${(ti.style.posY / 100).toFixed(2)}`;
+        try {
+          if (!ti.text || !ti.text.trim()) return;
+          const cleanText = ti.text
+            .replace(/\\/g, '\\\\')
+            .replace(/'/g, "'\\\\''")
+            .replace(/:/g, '\\:')
+            .replace(/;/g, '\\;')
+            .replace(/%/g, '%%')
+            .replace(/[\r\n]+/g, ' ')
+            .trim();
+          const fontSize = ti.style?.fontSize ? Math.round(ti.style.fontSize * (height / 1080)) : 38;
+          const fontColor = ti.style?.color || 'white';
+          let yExpr = '(h-text_h)/2';
+          if (ti.style?.position === 'top') yExpr = 'h*0.15';
+          if (ti.style?.position === 'bottom') yExpr = 'h*0.82';
+          if (ti.style?.posY !== undefined) yExpr = `h*${(ti.style.posY / 100).toFixed(2)}`;
 
-        const outVTag = `[vtxt${tIdx}]`;
-        const fontFile = fs.existsSync('arial.ttf') ? 'arial.ttf' : (fs.existsSync('server/arial.ttf') ? 'server/arial.ttf' : '');
-        const fontOpt = fontFile ? `fontfile='${fontFile}':` : '';
-        filterParts.push(
-          `${currentVideoTag}drawtext=${fontOpt}text='${cleanText}':fontsize=${fontSize}:fontcolor=${fontColor}:x=(w-text_w)/2:y=${yExpr}:enable='between(t,${ti.start.toFixed(2)},${ti.end.toFixed(2)})':box=1:boxcolor=black@0.65:boxborderw=6${outVTag}`
-        );
-        currentVideoTag = outVTag;
+          const outVTag = `[vtxt${tIdx}]`;
+          filterParts.push(
+            `${currentVideoTag}drawtext=${fontOpt}text='${cleanText}':fontsize=${fontSize}:fontcolor=${fontColor}:x=(w-text_w)/2:y=${yExpr}:enable='between(t,${ti.start.toFixed(2)},${ti.end.toFixed(2)})':box=1:boxcolor=black@0.65:boxborderw=6${outVTag}`
+          );
+          currentVideoTag = outVTag;
+        } catch (textErr: any) {
+          console.warn(`[TEXT_WARNING] Failed to add text item ${tIdx}:`, textErr.message);
+        }
       });
     }
 
@@ -859,51 +910,66 @@ export class FFmpegService {
 
     // Mix multi-track Audio & Background Music (BGM) with auto-ducking
     let finalAudioTag = currentAudioTag;
-    if (audioTracks && audioTracks.length > 0) {
-      const finalDuration = Math.max(1, runningDuration);
+    const activeAudioTracks = (audioTracks || []).filter((track) => {
+      const vol = track.volume !== undefined ? track.volume : 0.8;
+      return !track.isMuted && vol > 0.001 && track.filePath && fs.existsSync(track.filePath);
+    });
+
+    if (activeAudioTracks.length > 0) {
+      const finalDuration = Math.max(0.5, runningDuration);
       const bgmTags: string[] = [];
 
-      audioTracks.forEach((track, tIdx) => {
+      for (let tIdx = 0; tIdx < activeAudioTracks.length; tIdx++) {
+        const track = activeAudioTracks[tIdx];
         const duckMultiplier = autoDucking ? Math.max(0.15, 1 - (duckingAmount || 0.5)) : 1.0;
         const baseVol = track.volume !== undefined ? track.volume : 0.8;
-        const vol = track.isMuted ? 0 : baseVol * duckMultiplier;
+        const vol = baseVol * duckMultiplier;
         const trackDur = track.duration && track.duration > 0 ? Math.min(track.duration, finalDuration) : finalDuration;
         const actualFadeIn = Math.min(0.25, track.fadeIn !== undefined ? track.fadeIn : 0.2);
         const actualFadeOut = Math.min(0.5, trackDur * 0.15, track.fadeOut !== undefined ? track.fadeOut : 0.5);
         const fadeOutStart = Math.max(0, trackDur - actualFadeOut);
         const trackTag = `[extaudio${tIdx}]`;
 
-        if (track.isMuted || vol <= 0.001) {
+        const inputIdx = nextInputIdx++;
+        inputs.push('-vn', '-i', track.filePath);
+        let extraFilters = '';
+        if (track.normalize) extraFilters += ',loudnorm=I=-16:TP=-1.5:LRA=11';
+
+        let delayFilter = '';
+        if (track.start && track.start > 0) {
+          const delayMs = Math.round(track.start * 1000);
+          delayFilter = `,adelay=${delayMs}|${delayMs}`;
+        }
+
+        let bgmProbeDuration = 0;
+        try {
+          const bp = await this.probeMedia(track.filePath);
+          bgmProbeDuration = bp.duration || 0;
+        } catch {}
+
+        if (bgmProbeDuration >= trackDur) {
+          // No loop filter needed: audio source is already long enough
           filterParts.push(
-            `aevalsrc=0:d=${trackDur.toFixed(3)}:s=44100:c=stereo,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp${trackTag}`
+            `[${inputIdx}:a]aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,asetpts=PTS-STARTPTS,atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters},apad=whole_dur=${trackDur.toFixed(3)},atrim=0:${trackDur.toFixed(3)}${trackTag}`
           );
         } else {
-          const inputIdx = nextInputIdx++;
-          inputs.push('-vn', '-i', track.filePath);
-          let extraFilters = '';
-          if (track.normalize) extraFilters += ',loudnorm=I=-16:TP=-1.5:LRA=11';
-
-          let delayFilter = '';
-          if (track.start && track.start > 0) {
-            const delayMs = Math.round(track.start * 1000);
-            delayFilter = `,adelay=${delayMs}|${delayMs}`;
-          }
-
-          // Safe bounded circular buffer for looping (bounded to actual duration, never multi-gigabytes)
-          const loopSamples = Math.min(Math.ceil(trackDur * 44100), 5 * 60 * 44100);
+          // Bounded loop circular buffer
+          const loopSamples = Math.min(Math.ceil((bgmProbeDuration || trackDur) * 44100), Math.ceil(trackDur * 44100), 5 * 60 * 44100);
           filterParts.push(
             `[${inputIdx}:a]aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,asetpts=PTS-STARTPTS,aloop=loop=-1:size=${loopSamples},atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters},apad=whole_dur=${trackDur.toFixed(3)},atrim=0:${trackDur.toFixed(3)}${trackTag}`
           );
         }
         bgmTags.push(trackTag);
-      });
+      }
 
-      const audioTagsToMix = [currentAudioTag, ...bgmTags];
-      const mixInputsCount = audioTagsToMix.length;
-      filterParts.push(
-        `${audioTagsToMix.join('')}amix=inputs=${mixInputsCount}:duration=first:dropout_transition=0:normalize=0[mixedaudio]`
-      );
-      finalAudioTag = '[mixedaudio]';
+      if (bgmTags.length > 0) {
+        const audioTagsToMix = [currentAudioTag, ...bgmTags];
+        const mixInputsCount = audioTagsToMix.length;
+        filterParts.push(
+          `${audioTagsToMix.join('')}amix=inputs=${mixInputsCount}:duration=first:dropout_transition=0:normalize=0[mixedaudio]`
+        );
+        finalAudioTag = '[mixedaudio]';
+      }
     }
 
     const filterString = filterParts.join(';');
@@ -998,16 +1064,29 @@ export class FFmpegService {
             if (!probe.hasVideo || probe.duration <= 0) {
               throw new Error(`Render output file failed stream validation: duration=${probe.duration}s, hasVideo=${probe.hasVideo}`);
             }
-            console.log(`Render succeeded and verified: ${outputPath}, size: ${stat.size} bytes, duration: ${probe.duration}s, hasVideo: ${probe.hasVideo}, hasAudio: ${probe.hasAudio}`);
+
+            console.log(`[RENDER_RESULT]`);
+            console.log(`jobId: ${jobId}`);
+            console.log(`exit code: 0`);
+            console.log(`output exists: true`);
+            console.log(`output size: ${stat.size} bytes`);
+            console.log(`ffprobe result: duration=${probe.duration}s, ${probe.width}x${probe.height}, format=${probe.format}, video=${probe.hasVideo}, audio=${probe.hasAudio}`);
+            console.log(`final status: completed`);
+
             onProgress?.({ stage: 'Export complete!', percent: 100 });
             resolve(outputPath);
           } catch (valErr: any) {
-            console.error('Post-render verification error:', valErr.message);
+            console.error(`[RENDER_RESULT] Validation failed for job ${jobId}:`, valErr.message);
             reject(new Error(`Post-render verification failed: ${valErr.message}`));
           }
         } else {
-          console.error(`FFmpeg render error code: ${code}, signal: ${signal}`, errorLog);
-          reject(new Error(`FFmpeg rendering failed with code ${code || signal}: ${errorLog.slice(-1000)}`));
+          console.error(`[RENDER_RESULT]`);
+          console.error(`jobId: ${jobId}`);
+          console.error(`exit code: ${code}`);
+          console.error(`output exists: ${fs.existsSync(outputPath)}`);
+          console.error(`final status: failed`);
+          console.error(`[FFMPEG REAL STDERR]:\n${errorLog}`);
+          reject(new Error(`FFmpeg rendering failed with code ${code || signal}: ${errorLog.slice(-1500)}`));
         }
       });
 
