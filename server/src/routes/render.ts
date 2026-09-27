@@ -6,11 +6,13 @@ import { EXPORTS_DIR, MEDIA_FILE, SEEDS_DIR, UPLOADS_DIR, PROJECTS_FILE } from '
 import { FFmpegService, RenderClipItem, RenderAudioItem } from '../services/ffmpegService.js';
 import { MediaItem } from '../services/seedService.js';
 import { AudioService } from '../services/audioService.js';
+import { getOrCreateSessionId } from '../services/sessionService.js';
 
 const router = Router();
 
-interface RenderJob {
+export interface RenderJob {
   id: string;
+  userId?: string;
   projectId?: string;
   status: 'queued' | 'rendering' | 'completed' | 'failed';
   stage: string;
@@ -26,7 +28,7 @@ interface RenderJob {
   completedAt?: string;
 }
 
-const activeJobs = new Map<string, RenderJob>();
+export const activeJobs = new Map<string, RenderJob>();
 
 function getMediaMap(): Map<string, MediaItem> {
   const map = new Map<string, MediaItem>();
@@ -44,6 +46,7 @@ function getMediaMap(): Map<string, MediaItem> {
  */
 router.post(['/', '/start'], async (req, res) => {
   try {
+    const sessionId = getOrCreateSessionId(req, res);
     let {
       projectId,
       title = 'Exported_Video',
@@ -145,11 +148,31 @@ router.post(['/', '/start'], async (req, res) => {
     const outputFilename = `${cleanTitle}_${jobId}.${ext}`;
     const outputFilePath = path.join(EXPORTS_DIR, outputFilename);
 
-    // Robust media path resolver
+    // Robust media path resolver with privacy enforcement
+    const checkPathOwnership = (targetPath: string): boolean => {
+      if (!targetPath.includes('uploads')) return true;
+      const base = path.basename(targetPath);
+      for (const m of mediaMap.values()) {
+        if (m.filePath && path.basename(m.filePath) === base) {
+          if (m.userId && m.userId !== sessionId && !m.isSeed && !m.id.startsWith('seed-')) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
     const resolveMediaPath = (item: { filePath?: string; url?: string; mediaId?: string; src?: string; id?: string; name?: string; originalName?: string }): string | undefined => {
       if (!item) return undefined;
+      if (item.mediaId) {
+        const m = mediaMap.get(item.mediaId);
+        if (m && m.userId && m.userId !== sessionId && !m.isSeed && !m.id.startsWith('seed-')) {
+          console.warn(`[SECURITY] Rejected unauthorized media access for ${item.mediaId}`);
+          return undefined;
+        }
+      }
       const candidatePath = item.filePath || (item as any).path;
-      if (candidatePath && fs.existsSync(candidatePath)) {
+      if (candidatePath && fs.existsSync(candidatePath) && checkPathOwnership(candidatePath)) {
         return candidatePath;
       }
       if (candidatePath) {
@@ -157,17 +180,17 @@ router.post(['/', '/start'], async (req, res) => {
         const inSeeds = path.join(SEEDS_DIR, base);
         if (fs.existsSync(inSeeds)) return inSeeds;
         const inUploads = path.join(UPLOADS_DIR, base);
-        if (fs.existsSync(inUploads)) return inUploads;
+        if (fs.existsSync(inUploads) && checkPathOwnership(inUploads)) return inUploads;
       }
       if (item.mediaId) {
         const m = mediaMap.get(item.mediaId);
-        if (m && fs.existsSync(m.filePath)) return m.filePath;
+        if (m && fs.existsSync(m.filePath) && checkPathOwnership(m.filePath)) return m.filePath;
         if (m && m.filePath) {
           const base = path.basename(m.filePath);
           const inSeeds = path.join(SEEDS_DIR, base);
           if (fs.existsSync(inSeeds)) return inSeeds;
           const inUploads = path.join(UPLOADS_DIR, base);
-          if (fs.existsSync(inUploads)) return inUploads;
+          if (fs.existsSync(inUploads) && checkPathOwnership(inUploads)) return inUploads;
         }
       }
       const rawUrl = item.url || item.src;
@@ -358,6 +381,7 @@ router.post(['/', '/start'], async (req, res) => {
 
     const job: RenderJob = {
       id: jobId,
+      userId: sessionId,
       projectId,
       status: 'rendering',
       stage: 'Initializing rendering pipeline',
@@ -424,21 +448,24 @@ router.post(['/', '/start'], async (req, res) => {
 });
 
 /**
- * GET /api/render or /api/render/jobs - list all active and recent render jobs
+ * GET /api/render or /api/render/jobs - list all active and recent render jobs for current session
  */
 router.get(['/', '/jobs'], (req, res) => {
-  const jobsList = Array.from(activeJobs.values()).map((j) => ({
-    id: j.id,
-    projectId: j.projectId,
-    status: j.status,
-    stage: j.stage,
-    progress: j.progress,
-    error: j.error,
-    startedAt: j.startedAt,
-    completedAt: j.completedAt,
-    fileSize: j.fileSize,
-    downloadUrl: j.downloadUrl,
-  }));
+  const sessionId = getOrCreateSessionId(req, res);
+  const jobsList = Array.from(activeJobs.values())
+    .filter((j) => !j.userId || j.userId === sessionId)
+    .map((j) => ({
+      id: j.id,
+      projectId: j.projectId,
+      status: j.status,
+      stage: j.stage,
+      progress: j.progress,
+      error: j.error,
+      startedAt: j.startedAt,
+      completedAt: j.completedAt,
+      fileSize: j.fileSize,
+      downloadUrl: j.downloadUrl,
+    }));
   res.json({ success: true, count: jobsList.length, data: jobsList });
 });
 
@@ -446,10 +473,11 @@ router.get(['/', '/jobs'], (req, res) => {
  * GET /api/render/status/:jobId or /api/render/:jobId - check progress
  */
 router.get(['/status/:jobId', '/job/:jobId', '/:jobId'], (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { jobId } = req.params;
   const job = activeJobs.get(jobId);
 
-  if (!job) {
+  if (!job || (job.userId && job.userId !== sessionId)) {
     return res.status(404).json({ success: false, error: 'Render job not found' });
   }
 
@@ -460,10 +488,11 @@ router.get(['/status/:jobId', '/job/:jobId', '/:jobId'], (req, res) => {
  * GET /api/render/download/:jobId
  */
 router.get('/download/:jobId', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { jobId } = req.params;
   const job = activeJobs.get(jobId);
 
-  if (!job || !fs.existsSync(job.outputFilePath)) {
+  if (!job || (job.userId && job.userId !== sessionId) || !fs.existsSync(job.outputFilePath)) {
     return res.status(404).json({ success: false, error: 'Render output file not found' });
   }
 

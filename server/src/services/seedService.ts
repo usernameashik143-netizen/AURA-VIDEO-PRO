@@ -9,6 +9,8 @@ const execAsync = promisify(exec);
 
 export interface MediaItem {
   id: string;
+  userId?: string;
+  isSeed?: boolean;
   name: string;
   originalName: string;
   type: 'video' | 'audio' | 'image';

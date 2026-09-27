@@ -155,6 +155,13 @@ function pushHistory(proj: Project) {
   globalState.historyIndex = newHist.length - 1;
 }
 
+export async function authFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  return fetch(input, {
+    ...init,
+    credentials: 'include',
+  });
+}
+
 export function useAppStore() {
   const [, setTick] = useState(0);
 
@@ -193,7 +200,7 @@ export function useAppStore() {
 
   const fetchMedia = useCallback(async () => {
     try {
-      const res = await fetch('/api/media');
+      const res = await authFetch('/api/media');
       const data = await res.json();
       if (data.success) {
         globalState.mediaLibrary = data.data;
@@ -212,7 +219,7 @@ export function useAppStore() {
     filesArray.forEach((file) => formData.append('files', file));
 
     try {
-      const res = await fetch('/api/media/upload', {
+      const res = await authFetch('/api/media/upload', {
         method: 'POST',
         body: formData,
       });
@@ -252,7 +259,7 @@ export function useAppStore() {
 
   const deleteMedia = useCallback(async (id: string) => {
     try {
-      const res = await fetch(`/api/media/${id}`, { method: 'DELETE' });
+      const res = await authFetch(`/api/media/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         globalState.mediaLibrary = globalState.mediaLibrary.filter((m) => m.id !== id);
@@ -270,7 +277,7 @@ export function useAppStore() {
 
   const fetchProjects = useCallback(async () => {
     try {
-      const res = await fetch('/api/projects');
+      const res = await authFetch('/api/projects');
       const data = await res.json();
       if (data.success && data.data.length > 0) {
         globalState.projects = data.data;
@@ -316,7 +323,7 @@ export function useAppStore() {
 
   const createNewProject = useCallback(async (aspectRatio: AspectRatio = '16:9', title = 'Untitled Project') => {
     try {
-      const res = await fetch('/api/projects', {
+      const res = await authFetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -351,7 +358,7 @@ export function useAppStore() {
   const applyTemplate = useCallback(
     async (templateId: string, mediaIds?: string[], customTitle?: string) => {
       try {
-        const res = await fetch(`/api/templates/${templateId}/apply`, {
+        const res = await authFetch(`/api/templates/${templateId}/apply`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ mediaIds, customTitle }),
@@ -403,7 +410,7 @@ export function useAppStore() {
       }
     ) => {
       try {
-        const res = await fetch(`/api/templates/${templateId}/customize`, {
+        const res = await authFetch(`/api/templates/${templateId}/customize`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(replacements),
@@ -456,7 +463,7 @@ export function useAppStore() {
       proj.duration = parseFloat(maxDuration.toFixed(2));
       proj.updatedAt = new Date().toISOString();
 
-      const res = await fetch(`/api/projects/${proj.id}`, {
+      const res = await authFetch(`/api/projects/${proj.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(proj),
@@ -483,7 +490,7 @@ export function useAppStore() {
 
   const duplicateProject = useCallback(async (id: string) => {
     try {
-      const res = await fetch(`/api/projects/${id}/duplicate`, { method: 'POST' });
+      const res = await authFetch(`/api/projects/${id}/duplicate`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         globalState.projects = [data.data, ...globalState.projects];
@@ -501,7 +508,7 @@ export function useAppStore() {
 
   const deleteProject = useCallback(async (id: string) => {
     try {
-      const res = await fetch(`/api/projects/${id}`, { method: 'DELETE' });
+      const res = await authFetch(`/api/projects/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         globalState.projects = globalState.projects.filter((p) => p.id !== id);
@@ -1226,7 +1233,7 @@ export function useAppStore() {
   // AUDIO CATALOG & BEAT SYNC
   const fetchAudioCategories = useCallback(async () => {
     try {
-      const res = await fetch('/api/audio/categories');
+      const res = await authFetch('/api/audio/categories');
       const data = await res.json();
       if (data.success) {
         globalState.audioCategories = data.data;
@@ -1242,7 +1249,7 @@ export function useAppStore() {
       const params = new URLSearchParams();
       if (category && category !== 'all') params.append('category', category);
       if (search) params.append('query', search);
-      const res = await fetch(`/api/audio/library?${params.toString()}`);
+      const res = await authFetch(`/api/audio/library?${params.toString()}`);
       const data = await res.json();
       if (data.success) {
         globalState.audioLibrary = data.data;
@@ -1260,7 +1267,7 @@ export function useAppStore() {
 
   const fetchAudioBeats = useCallback(async (duration = 30, bpm = 120) => {
     try {
-      const res = await fetch('/api/audio/beats', {
+      const res = await authFetch('/api/audio/beats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ duration, bpm }),
@@ -1329,7 +1336,7 @@ export function useAppStore() {
     }
 
     try {
-      const res = await fetch('/api/ai/subtitles', {
+      const res = await authFetch('/api/ai/subtitles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1392,7 +1399,7 @@ export function useAppStore() {
       }
 
       try {
-        const res = await fetch('/api/ai/auto-edit', {
+        const res = await authFetch('/api/ai/auto-edit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(opts),
@@ -1447,7 +1454,7 @@ export function useAppStore() {
     async (command: string) => {
       if (!globalState.currentProject) return;
       try {
-        const res = await fetch('/api/ai/assistant', {
+        const res = await authFetch('/api/ai/assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1476,7 +1483,7 @@ export function useAppStore() {
   const generateCaptions = useCallback(async () => {
     if (!globalState.currentProject) return;
     try {
-      const res = await fetch('/api/ai/captions', {
+      const res = await authFetch('/api/ai/captions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ duration: globalState.currentProject.duration || 20 }),
@@ -1604,7 +1611,7 @@ export function useAppStore() {
     });
 
     try {
-      const res = await fetch('/api/render', {
+      const res = await authFetch('/api/render', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1642,7 +1649,7 @@ export function useAppStore() {
         let consecutiveErrors = 0;
         const interval = setInterval(async () => {
           try {
-            const statusRes = await fetch(`/api/render/status/${jobId}`);
+            const statusRes = await authFetch(`/api/render/status/${jobId}`);
             if (!statusRes.ok) {
               consecutiveErrors++;
               console.warn('[UI_EXPORT_POLL_WARN] Non-200 poll status:', statusRes.status, `(attempt ${consecutiveErrors}/10)`);

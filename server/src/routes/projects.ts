@@ -2,6 +2,7 @@ import { Router } from 'express';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { PROJECTS_FILE } from '../config.js';
+import { getOrCreateSessionId } from '../services/sessionService.js';
 
 const router = Router();
 
@@ -19,17 +20,20 @@ function saveProjects(projects: any[]): void {
 }
 
 /**
- * GET /api/projects - list all projects
+ * GET /api/projects - list projects belonging to current session (plus demo project)
  */
 router.get('/', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const projects = getProjects();
-  res.json({ success: true, data: projects });
+  const visible = projects.filter((p) => p.id === 'demo-project-1' || (p.userId && p.userId === sessionId));
+  res.json({ success: true, data: visible });
 });
 
 /**
  * GET /api/projects/:id
  */
 router.get('/:id', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const projects = getProjects();
   const project = projects.find((p) => p.id === id);
@@ -38,13 +42,18 @@ router.get('/:id', (req, res) => {
     return res.status(404).json({ success: false, error: 'Project not found' });
   }
 
+  if (project.id !== 'demo-project-1' && project.userId && project.userId !== sessionId) {
+    return res.status(404).json({ success: false, error: 'Project not found' });
+  }
+
   res.json({ success: true, data: project });
 });
 
 /**
- * POST /api/projects - create new project
+ * POST /api/projects - create new project tagged with current session
  */
 router.post('/', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const {
     title = 'Untitled Project',
     aspectRatio = '16:9',
@@ -58,6 +67,7 @@ router.post('/', (req, res) => {
   const projects = getProjects();
   const newProject = {
     id: `proj-${uuidv4().slice(0, 8)}`,
+    userId: sessionId,
     title,
     aspectRatio,
     resolution,
@@ -80,9 +90,10 @@ router.post('/', (req, res) => {
 });
 
 /**
- * PUT /api/projects/:id - update project
+ * PUT /api/projects/:id - update project (enforces ownership)
  */
 router.put('/:id', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const projects = getProjects();
   const index = projects.findIndex((p) => p.id === id);
@@ -91,10 +102,16 @@ router.put('/:id', (req, res) => {
     return res.status(404).json({ success: false, error: 'Project not found' });
   }
 
+  const existing = projects[index];
+  if (existing.id !== 'demo-project-1' && existing.userId && existing.userId !== sessionId) {
+    return res.status(404).json({ success: false, error: 'Project not found' });
+  }
+
   const updated = {
-    ...projects[index],
+    ...existing,
     ...req.body,
     id, // protect id
+    userId: existing.userId || sessionId,
     updatedAt: new Date().toISOString(),
   };
 
@@ -108,6 +125,7 @@ router.put('/:id', (req, res) => {
  * POST /api/projects/:id/duplicate
  */
 router.post('/:id/duplicate', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const projects = getProjects();
   const original = projects.find((p) => p.id === id);
@@ -116,9 +134,14 @@ router.post('/:id/duplicate', (req, res) => {
     return res.status(404).json({ success: false, error: 'Project not found' });
   }
 
+  if (original.id !== 'demo-project-1' && original.userId && original.userId !== sessionId) {
+    return res.status(404).json({ success: false, error: 'Project not found' });
+  }
+
   const copy = {
     ...JSON.parse(JSON.stringify(original)),
     id: `proj-${uuidv4().slice(0, 8)}`,
+    userId: sessionId,
     title: `${original.title} (Copy)`,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -134,14 +157,24 @@ router.post('/:id/duplicate', (req, res) => {
  * DELETE /api/projects/:id
  */
 router.delete('/:id', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const projects = getProjects();
-  const filtered = projects.filter((p) => p.id !== id);
+  const target = projects.find((p) => p.id === id);
 
-  if (projects.length === filtered.length) {
+  if (!target) {
     return res.status(404).json({ success: false, error: 'Project not found' });
   }
 
+  if (target.id === 'demo-project-1') {
+    return res.status(403).json({ success: false, error: 'Cannot delete default demo project' });
+  }
+
+  if (target.userId && target.userId !== sessionId) {
+    return res.status(404).json({ success: false, error: 'Project not found' });
+  }
+
+  const filtered = projects.filter((p) => p.id !== id);
   saveProjects(filtered);
   res.json({ success: true, message: 'Project deleted' });
 });

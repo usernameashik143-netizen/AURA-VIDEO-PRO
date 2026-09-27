@@ -6,6 +6,8 @@ import { AIService } from '../services/aiService.js';
 import { FFmpegService } from '../services/ffmpegService.js';
 import { MediaItem } from '../services/seedService.js';
 
+import { getOrCreateSessionId } from '../services/sessionService.js';
+
 const router = Router();
 
 function getMediaItems(): MediaItem[] {
@@ -22,9 +24,12 @@ function getMediaItems(): MediaItem[] {
  */
 router.post('/analyze', async (req, res) => {
   try {
+    const sessionId = getOrCreateSessionId(req, res);
     const { mediaIds } = req.body;
     const allMedia = getMediaItems();
-    const targetClips = allMedia.filter((m) => mediaIds?.includes(m.id));
+    const targetClips = allMedia.filter(
+      (m) => mediaIds?.includes(m.id) && (m.isSeed || m.id.startsWith('seed-') || m.userId === sessionId)
+    );
 
     if (targetClips.length === 0) {
       return res.status(400).json({ success: false, error: 'No valid clips provided' });
@@ -59,6 +64,7 @@ router.post('/analyze', async (req, res) => {
  */
 router.post('/auto-edit', (req, res) => {
   try {
+    const sessionId = getOrCreateSessionId(req, res);
     const {
       mediaIds = [],
       style = 'Auto Select',
@@ -71,7 +77,12 @@ router.post('/auto-edit', (req, res) => {
     } = req.body;
 
     const allMedia = getMediaItems();
-    const selectedClips = allMedia.filter((m) => mediaIds.includes(m.id) && m.type === 'video');
+    const selectedClips = allMedia.filter(
+      (m) =>
+        mediaIds.includes(m.id) &&
+        m.type === 'video' &&
+        (m.isSeed || m.id.startsWith('seed-') || m.userId === sessionId)
+    );
 
     if (selectedClips.length === 0) {
       return res.status(400).json({ success: false, error: 'Please select at least one video clip' });

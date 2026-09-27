@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { UPLOADS_DIR, THUMBNAILS_DIR, MEDIA_FILE } from '../config.js';
 import { FFmpegService } from '../services/ffmpegService.js';
 import { MediaItem } from '../services/seedService.js';
+import { getOrCreateSessionId } from '../services/sessionService.js';
 
 const router = Router();
 
@@ -25,7 +26,7 @@ const upload = multer({
   limits: { fileSize: 500 * 1024 * 1024 }, // 500MB per file
 });
 
-function getMediaItems(): MediaItem[] {
+export function getMediaItems(): MediaItem[] {
   if (!fs.existsSync(MEDIA_FILE)) return [];
   try {
     return JSON.parse(fs.readFileSync(MEDIA_FILE, 'utf-8'));
@@ -34,23 +35,29 @@ function getMediaItems(): MediaItem[] {
   }
 }
 
-function saveMediaItems(items: MediaItem[]): void {
+export function saveMediaItems(items: MediaItem[]): void {
   fs.writeFileSync(MEDIA_FILE, JSON.stringify(items, null, 2));
 }
 
 /**
- * GET /api/media - list all media items
+ * GET /api/media - list media items belonging to current session (plus public seeds)
  */
 router.get('/', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const items = getMediaItems();
-  res.json({ success: true, data: items });
+  const visible = items.filter((i) => {
+    if (i.isSeed || i.id.startsWith('seed-')) return true;
+    return i.userId && i.userId === sessionId;
+  });
+  res.json({ success: true, data: visible });
 });
 
 /**
- * POST /api/media/upload or /api/upload - upload multiple files
+ * POST /api/media/upload or /api/upload - upload multiple files tagged with current session
  */
 router.post(['/', '/upload'], upload.array('files', 15), async (req, res) => {
   try {
+    const sessionId = getOrCreateSessionId(req, res);
     const files = (req.files as Express.Multer.File[]) || [];
     if (files.length === 0) {
       return res.status(400).json({ success: false, error: 'No files uploaded' });
@@ -93,6 +100,8 @@ router.post(['/', '/upload'], upload.array('files', 15), async (req, res) => {
 
       const item: MediaItem = {
         id: fileId,
+        userId: sessionId,
+        isSeed: false,
         name: path.basename(file.originalname, ext),
         originalName: file.originalname,
         type,
@@ -114,7 +123,7 @@ router.post(['/', '/upload'], upload.array('files', 15), async (req, res) => {
     }
 
     saveMediaItems(currentItems);
-    res.json({ success: true, uploaded: newItems, total: currentItems.length });
+    res.json({ success: true, uploaded: newItems, total: newItems.length });
   } catch (err: any) {
     console.error('Upload error:', err);
     res.status(500).json({ success: false, error: err.message || 'Upload failed' });
@@ -122,14 +131,23 @@ router.post(['/', '/upload'], upload.array('files', 15), async (req, res) => {
 });
 
 /**
- * DELETE /api/media/:id
+ * DELETE /api/media/:id - delete media (enforces ownership)
  */
 router.delete('/:id', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const items = getMediaItems();
   const item = items.find((i) => i.id === id);
 
   if (!item) {
+    return res.status(404).json({ success: false, error: 'Media not found' });
+  }
+
+  if (item.isSeed || item.id.startsWith('seed-')) {
+    return res.status(403).json({ success: false, error: 'Cannot delete default system media assets' });
+  }
+
+  if (item.userId && item.userId !== sessionId) {
     return res.status(404).json({ success: false, error: 'Media not found' });
   }
 
@@ -139,6 +157,14 @@ router.delete('/:id', (req, res) => {
       fs.unlinkSync(item.filePath);
     } catch {}
   }
+  if (item.thumbnailUrl) {
+    const thumbPath = path.join(THUMBNAILS_DIR, path.basename(item.thumbnailUrl));
+    if (fs.existsSync(thumbPath)) {
+      try {
+        fs.unlinkSync(thumbPath);
+      } catch {}
+    }
+  }
 
   const filtered = items.filter((i) => i.id !== id);
   saveMediaItems(filtered);
@@ -146,15 +172,20 @@ router.delete('/:id', (req, res) => {
 });
 
 /**
- * PATCH /api/media/:id - rename
+ * PATCH /api/media/:id - rename (enforces ownership)
  */
 router.patch('/:id', (req, res) => {
+  const sessionId = getOrCreateSessionId(req, res);
   const { id } = req.params;
   const { name } = req.body;
   const items = getMediaItems();
   const item = items.find((i) => i.id === id);
 
   if (!item) {
+    return res.status(404).json({ success: false, error: 'Media not found' });
+  }
+
+  if (item.userId && item.userId !== sessionId) {
     return res.status(404).json({ success: false, error: 'Media not found' });
   }
 

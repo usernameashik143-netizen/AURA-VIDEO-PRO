@@ -1084,6 +1084,12 @@ export class FFmpegService {
     if (quality === 'high') { crf = '20'; preset = 'fast'; }
     if (quality === 'maximum') { crf = '17'; preset = 'medium'; }
 
+    let maxrate = '8M';
+    let bufsize = '16M';
+    if (resolution === '720p') { maxrate = '4M'; bufsize = '8M'; }
+    else if (resolution === '1080p') { maxrate = '8M'; bufsize = '16M'; }
+    else if (resolution === '4k') { maxrate = '16M'; bufsize = '32M'; }
+
     const args = [
       '-y',
       '-filter_complex_threads',
@@ -1106,12 +1112,16 @@ export class FFmpegService {
             preset,
             '-crf',
             crf,
+            '-maxrate',
+            maxrate,
+            '-bufsize',
+            bufsize,
             '-pix_fmt',
             'yuv420p',
             '-threads',
             '1',
             '-x264-params',
-            'bframes=0:ref=1:rc-lookahead=10:sync-lookahead=0',
+            'bframes=2:ref=2:rc-lookahead=15',
           ]),
       '-c:a',
       audioCodec,
@@ -1122,7 +1132,7 @@ export class FFmpegService {
       '-ac',
       '2',
       '-max_muxing_queue_size',
-      '1024',
+      '512',
       '-t',
       runningDuration.toFixed(3),
       outputPath,
