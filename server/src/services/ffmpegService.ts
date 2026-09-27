@@ -629,9 +629,103 @@ export class FFmpegService {
   }
 
   /**
-   * Real video render execution with FFmpeg (real xfade transitions, audio mixing, text & captions)
+   * Real video render execution with FFmpeg (chunked for multi-clip stability on resource-limited containers)
    */
   static async renderVideo(opts: RenderJobOptions): Promise<string> {
+    const { clips, jobId = 'job-render', onProgress, outputPath } = opts;
+    if (!clips || clips.length === 0) {
+      throw new Error('No clips provided for rendering');
+    }
+
+    // When timeline contains more than 3 clips, divide into safe sub-timelines (<= 3 clips per batch)
+    // to strictly cap memory and avoid stream queue exhaustion on container environments (Railway 512MB RAM)
+    if (clips.length > 3) {
+      console.log(`[CHUNKED_RENDER] ${clips.length} clips detected. Dividing into safe batches of at most 3 clips to eliminate memory exhaustion on production server.`);
+      const chunkSize = 3;
+      const chunks: RenderClipItem[][] = [];
+      for (let i = 0; i < clips.length; i += chunkSize) {
+        chunks.push(clips.slice(i, i + chunkSize));
+      }
+
+      const tempDir = path.dirname(outputPath);
+      const chunkPaths: string[] = [];
+
+      try {
+        for (let cIdx = 0; cIdx < chunks.length; cIdx++) {
+          const chunkClips = chunks[cIdx];
+          const chunkOut = path.join(tempDir, `temp_chunk_${jobId}_${cIdx}.mp4`);
+          chunkPaths.push(chunkOut);
+
+          const startPct = 10 + Math.round((cIdx / chunks.length) * 45);
+          onProgress?.({
+            stage: `Rendering timeline batch ${cIdx + 1}/${chunks.length} (${chunkClips.length} clips)...`,
+            percent: startPct,
+          });
+
+          await this.renderSinglePass({
+            ...opts,
+            jobId: `${jobId}-batch-${cIdx}`,
+            clips: chunkClips,
+            overlayClips: [],
+            audioTracks: [],
+            textClips: [],
+            captions: [],
+            outputPath: chunkOut,
+            onProgress: (p) => {
+              const subPct = startPct + Math.round((p.percent / 100) * (45 / chunks.length));
+              onProgress?.({ stage: p.stage, percent: Math.min(60, subPct) });
+            },
+          });
+        }
+
+        const chunkInputs: RenderClipItem[] = chunks.map((chunk, cIdx) => {
+          const lastClip = chunk[chunk.length - 1];
+          let chunkDur = 0;
+          for (let i = 0; i < chunk.length; i++) {
+            const c = chunk[i];
+            const d = c.duration || (c.trimEnd ? c.trimEnd - c.trimStart : 5);
+            const trDur = (i < chunk.length - 1 && chunk[i].transition?.duration) || 0;
+            chunkDur += Math.max(0.2, d - trDur);
+          }
+          return {
+            id: `chunk-clip-${cIdx}`,
+            filePath: chunkPaths[cIdx],
+            transition: cIdx < chunks.length - 1 ? lastClip.transition : undefined,
+            volume: 1,
+            trimStart: 0,
+            trimEnd: chunkDur,
+            duration: chunkDur,
+          };
+        });
+
+        onProgress?.({ stage: 'Assembling master timeline with audio mixing, titles, and grade...', percent: 65 });
+
+        const result = await this.renderSinglePass({
+          ...opts,
+          clips: chunkInputs,
+          onProgress: (p) => {
+            const finalPct = 65 + Math.round((p.percent / 100) * 33);
+            onProgress?.({ stage: p.stage, percent: Math.min(98, finalPct) });
+          },
+        });
+
+        return result;
+      } finally {
+        chunkPaths.forEach((cp) => {
+          try {
+            if (fs.existsSync(cp)) fs.unlinkSync(cp);
+          } catch {}
+        });
+      }
+    }
+
+    return this.renderSinglePass(opts);
+  }
+
+  /**
+   * Internal single-pass FFmpeg render execution
+   */
+  private static async renderSinglePass(opts: RenderJobOptions): Promise<string> {
     const {
       jobId = 'job-render',
       clips,
@@ -685,7 +779,7 @@ export class FFmpegService {
 
     // Add all clip file inputs
     probedClips.forEach((c) => {
-      inputs.push('-i', c.filePath);
+      inputs.push('-threads', '1', '-i', c.filePath);
     });
 
     // Normalize each clip video & audio stream
@@ -793,7 +887,7 @@ export class FFmpegService {
     if (overlayClips && overlayClips.length > 0) {
       overlayClips.forEach((ov, oIdx) => {
         const ovInputIdx = nextInputIdx++;
-        inputs.push('-i', ov.filePath);
+        inputs.push('-threads', '1', '-i', ov.filePath);
         const ovFormatted = `[ovfmt${oIdx}]`;
         const outOvVTag = `[vov${oIdx}]`;
 
@@ -931,7 +1025,7 @@ export class FFmpegService {
         const trackTag = `[extaudio${tIdx}]`;
 
         const inputIdx = nextInputIdx++;
-        inputs.push('-vn', '-i', track.filePath);
+        inputs.push('-threads', '1', '-vn', '-i', track.filePath);
         let extraFilters = '';
         if (track.normalize) extraFilters += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 
@@ -972,6 +1066,10 @@ export class FFmpegService {
       }
     }
 
+    // Explicitly clamp output video to yuv420p to eliminate any runtime auto_scale negotiation
+    filterParts.push(`${currentVideoTag}format=pix_fmts=yuv420p[voutfinal]`);
+    currentVideoTag = '[voutfinal]';
+
     const filterString = filterParts.join(';');
 
     onProgress?.({ stage: 'Encoding video frames and finalizing timeline...', percent: 70 });
@@ -988,6 +1086,9 @@ export class FFmpegService {
 
     const args = [
       '-y',
+      '-noautoscale',
+      '-filter_complex_threads',
+      '1',
       '-threads',
       '1',
       ...inputs,

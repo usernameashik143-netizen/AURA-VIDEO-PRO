@@ -1596,6 +1596,13 @@ export function useAppStore() {
     };
     notify();
 
+    console.log('[UI_EXPORT_START] Initiating export for project:', proj.id, {
+      videoClips: videoClips.length,
+      audioClips: audioClips.length,
+      textClips: textClips.length,
+      config: globalState.exportConfig,
+    });
+
     try {
       const res = await fetch('/api/render', {
         method: 'POST',
@@ -1620,6 +1627,8 @@ export function useAppStore() {
       });
 
       const data = await res.json();
+      console.log('[UI_EXPORT_RESPONSE]', data);
+
       if (data.success) {
         const jobId = data.data.jobId;
         globalState.activeRenderJob = {
@@ -1630,17 +1639,38 @@ export function useAppStore() {
         };
         notify();
 
+        let consecutiveErrors = 0;
         const interval = setInterval(async () => {
           try {
             const statusRes = await fetch(`/api/render/status/${jobId}`);
+            if (!statusRes.ok) {
+              consecutiveErrors++;
+              console.warn('[UI_EXPORT_POLL_WARN] Non-200 poll status:', statusRes.status, `(attempt ${consecutiveErrors}/10)`);
+              if (consecutiveErrors > 10) {
+                clearInterval(interval);
+                globalState.activeRenderJob = {
+                  jobId,
+                  status: 'failed',
+                  stage: 'Network timeout',
+                  progress: 0,
+                  error: 'Server connection lost during rendering poll.',
+                };
+                notify();
+              }
+              return;
+            }
+            consecutiveErrors = 0;
+
             const statusData = await statusRes.json();
             if (statusData.success) {
               const job: ExportJobStatus = statusData.data;
               globalState.activeRenderJob = job;
               notify();
+              console.log(`[UI_EXPORT_PROGRESS] ${job.progress}% - ${job.stage}`);
 
               if (job.status === 'completed') {
                 clearInterval(interval);
+                console.log('[UI_EXPORT_SUCCESS] Render completed successfully:', job);
                 addToast({
                   type: 'success',
                   title: 'Video Render Complete! 🎉',
@@ -1648,6 +1678,7 @@ export function useAppStore() {
                 });
               } else if (job.status === 'failed') {
                 clearInterval(interval);
+                console.error('[UI_EXPORT_FAILED]', job.error);
                 addToast({
                   type: 'error',
                   title: 'Render Failed',
@@ -1655,11 +1686,12 @@ export function useAppStore() {
                 });
               }
             }
-          } catch (e) {
-            console.warn('Poll error:', e);
+          } catch (e: any) {
+            console.warn('[UI_EXPORT_POLL_EXCEPTION]', e.message);
           }
         }, 1200);
       } else {
+        console.error('[UI_EXPORT_START_FAILED]', data.error);
         globalState.activeRenderJob = {
           jobId: 'failed',
           status: 'failed',
@@ -1670,6 +1702,7 @@ export function useAppStore() {
         notify();
       }
     } catch (err: any) {
+      console.error('[UI_EXPORT_NETWORK_ERROR]', err.message);
       globalState.activeRenderJob = {
         jobId: 'failed',
         status: 'failed',

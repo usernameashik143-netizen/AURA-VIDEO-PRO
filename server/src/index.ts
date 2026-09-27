@@ -54,11 +54,22 @@ app.all(['/uploads/*', '/thumbnails/*', '/exports/*', '/seeds/*'], (req, res) =>
   res.status(404).json({ success: false, error: `Asset not found: ${req.originalUrl}` });
 });
 
-// Production frontend serving (SPA fallback)
+// Production frontend serving (SPA fallback) with anti-caching for HTML entry point
 if (fs.existsSync(CLIENT_DIST_DIR)) {
   console.log(`📦 Serving production frontend from ${CLIENT_DIST_DIR}`);
-  app.use(express.static(CLIENT_DIST_DIR));
+  app.use(express.static(CLIENT_DIST_DIR, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
+    }
+  }));
   app.get('*', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(path.join(CLIENT_DIST_DIR, 'index.html'));
   });
 }
