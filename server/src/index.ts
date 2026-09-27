@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Static file hosting
 app.use('/uploads', express.static(UPLOADS_DIR));
 app.use('/thumbnails', express.static(THUMBNAILS_DIR));
+app.use('/thumbnails', express.static(path.join(CLIENT_DIST_DIR, 'thumbnails')));
 app.use('/exports', express.static(EXPORTS_DIR));
 app.use('/seeds', express.static(SEEDS_DIR));
 

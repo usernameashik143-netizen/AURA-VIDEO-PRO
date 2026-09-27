@@ -698,16 +698,16 @@ export class FFmpegService {
         scalePadFilter = `scale=${width}:${height}:force_original_aspect_ratio=increase:force_divisible_by=2,crop=${width}:${height}`;
       }
 
-      // Video filtergraph
+      // Video filtergraph: normalize timebase, trim, fps, square SAR, scale/pad to canvas, color grading, and yuv420p
       filterParts.push(
-        `[${idx}:v]settb=AVTB,trim=start=${c.trimStart}:end=${c.trimEnd}${speedFilter},fps=${fps},${scalePadFilter},setsar=1${colorFilter},format=pix_fmts=yuv420p[v${idx}]`
+        `[${idx}:v]settb=AVTB,trim=start=${c.trimStart}:end=${c.trimEnd}${speedFilter},fps=${fps},setsar=1,${scalePadFilter}${colorFilter},format=pix_fmts=yuv420p[v${idx}]`
       );
 
-      // Audio: trim, speed, volume, normalization
+      // Audio: normalize sample rate/layout/format FIRST, then trim, speed, volume, and exact padding
       const vol = c.isMuted ? 0 : (c.volume !== undefined ? c.volume : 1);
       if (c.isMuted || vol <= 0.001) {
         filterParts.push(
-          `aevalsrc=0:d=${c.effectiveDuration.toFixed(3)}:s=44100:c=stereo[a${idx}]`
+          `aevalsrc=0:d=${c.effectiveDuration.toFixed(3)}:s=44100:c=stereo,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp[a${idx}]`
         );
       } else if (c.hasAudio) {
         const audioSpeedFilter = this.getAtempoFilter(c.speed);
@@ -717,11 +717,11 @@ export class FFmpegService {
         if (c.normalize) audioEnhance += ',loudnorm=I=-16:TP=-1.5:LRA=11';
 
         filterParts.push(
-          `[${idx}:a]atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,volume=${vol.toFixed(2)},apad=whole_dur=${c.effectiveDuration.toFixed(3)},atrim=0:${c.effectiveDuration.toFixed(3)}[a${idx}]`
+          `[${idx}:a]aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,atrim=start=${c.trimStart}:end=${c.trimEnd},asetpts=PTS-STARTPTS${audioSpeedFilter}${audioEnhance},volume=${vol.toFixed(2)},apad=whole_dur=${c.effectiveDuration.toFixed(3)},atrim=0:${c.effectiveDuration.toFixed(3)}[a${idx}]`
         );
       } else {
         filterParts.push(
-          `aevalsrc=0:d=${c.effectiveDuration.toFixed(3)}:s=44100:c=stereo[a${idx}]`
+          `aevalsrc=0:d=${c.effectiveDuration.toFixed(3)}:s=44100:c=stereo,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp[a${idx}]`
         );
       }
     });
@@ -875,7 +875,7 @@ export class FFmpegService {
 
         if (track.isMuted || vol <= 0.001) {
           filterParts.push(
-            `aevalsrc=0:d=${trackDur.toFixed(3)}:s=44100:c=stereo:f=fltp${trackTag}`
+            `aevalsrc=0:d=${trackDur.toFixed(3)}:s=44100:c=stereo,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp${trackTag}`
           );
         } else {
           const inputIdx = nextInputIdx++;
@@ -889,8 +889,10 @@ export class FFmpegService {
             delayFilter = `,adelay=${delayMs}|${delayMs}`;
           }
 
+          // Safe bounded circular buffer for looping (bounded to actual duration, never multi-gigabytes)
+          const loopSamples = Math.min(Math.ceil(trackDur * 44100), 5 * 60 * 44100);
           filterParts.push(
-            `[${inputIdx}:a]aloop=loop=-1:size=2e+09,atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters}${trackTag}`
+            `[${inputIdx}:a]aformat=sample_rates=44100:channel_layouts=stereo:sample_fmts=fltp,asetpts=PTS-STARTPTS,aloop=loop=-1:size=${loopSamples},atrim=start=${track.trimStart || 0}:duration=${trackDur.toFixed(3)},volume=${vol.toFixed(2)}${delayFilter},afade=t=in:st=0:d=${actualFadeIn.toFixed(3)},afade=t=out:st=${fadeOutStart.toFixed(3)}:d=${actualFadeOut.toFixed(3)}${extraFilters},apad=whole_dur=${trackDur.toFixed(3)},atrim=0:${trackDur.toFixed(3)}${trackTag}`
           );
         }
         bgmTags.push(trackTag);
@@ -985,16 +987,27 @@ export class FFmpegService {
       proc.on('close', async (code, signal) => {
         if (code === 0) {
           try {
+            if (!fs.existsSync(outputPath)) {
+              throw new Error(`Render output file was not created: ${outputPath}`);
+            }
+            const stat = fs.statSync(outputPath);
+            if (stat.size === 0) {
+              throw new Error(`Render output file is empty (0 bytes): ${outputPath}`);
+            }
             const probe = await this.probeMedia(outputPath);
-            console.log(`Render succeeded: ${outputPath}, duration: ${probe.duration}s, hasVideo: ${probe.hasVideo}, hasAudio: ${probe.hasAudio}`);
+            if (!probe.hasVideo || probe.duration <= 0) {
+              throw new Error(`Render output file failed stream validation: duration=${probe.duration}s, hasVideo=${probe.hasVideo}`);
+            }
+            console.log(`Render succeeded and verified: ${outputPath}, size: ${stat.size} bytes, duration: ${probe.duration}s, hasVideo: ${probe.hasVideo}, hasAudio: ${probe.hasAudio}`);
             onProgress?.({ stage: 'Export complete!', percent: 100 });
             resolve(outputPath);
-          } catch {
-            resolve(outputPath);
+          } catch (valErr: any) {
+            console.error('Post-render verification error:', valErr.message);
+            reject(new Error(`Post-render verification failed: ${valErr.message}`));
           }
         } else {
           console.error(`FFmpeg render error code: ${code}, signal: ${signal}`, errorLog);
-          reject(new Error(`FFmpeg rendering failed with code ${code || signal}: ${errorLog.slice(-500)}`));
+          reject(new Error(`FFmpeg rendering failed with code ${code || signal}: ${errorLog.slice(-1000)}`));
         }
       });
 
